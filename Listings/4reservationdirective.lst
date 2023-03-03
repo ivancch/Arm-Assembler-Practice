@@ -1,0 +1,106 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           ReservationDirective
+    7 00000000         ReservationDirective
+    8 00000000         ; Загрузка регистров ЦПУ из предварительно
+    9 00000000         ; проинициализированной кодовой памяти
+   10 00000000         ; Псевдокоманды загрузки слов по известным 
+   11 00000000         ; адресам их расположения 
+   12 00000000 4802            LDR              r0, Const_0
+   13 00000002 4903            LDR              r1, Const_1
+   14 00000004 4A03            LDR              r2, Const_2
+   15 00000006 4B04            LDR              r3, Const_3
+   16 00000008 4C04            LDR              r4, Const_4
+   17 0000000A         
+   18 0000000A 47F0            BLX              LR
+   19 0000000C         
+   20 0000000C                 ALIGN
+   21 0000000C         ; Инициализация констант в кодовой памяти
+   22 0000000C 7788FFAA 
+                       Const_0 DCD              0x7788ffaa
+   23 00000010 22221111 
+                       Const_1 DCD              0x22221111
+   24 00000014 22 00 23 
+              00       Const_2 DCW              34,35
+   25 00000018 01 02 03 
+              04       Const_3 DCB              1,2,3,4
+   26 0000001C 05 06   Const_4 DCB              5,6
+   27 0000001E         ; Конец ассемблерного текста
+   28 0000001E                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\4reservationdirective.d -o.\o
+bjects\4reservationdirective.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVI
+SION_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\4reservationdirective.lst src\AssemblerPractice\4Reservation
+Directive.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Const_0 0000000C
+
+Symbol: Const_0
+   Definitions
+      At line 22 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 12 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: Const_0 used once
+Const_1 00000010
+
+Symbol: Const_1
+   Definitions
+      At line 23 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 13 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: Const_1 used once
+Const_2 00000014
+
+Symbol: Const_2
+   Definitions
+      At line 24 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 14 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: Const_2 used once
+Const_3 00000018
+
+Symbol: Const_3
+   Definitions
+      At line 25 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 15 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: Const_3 used once
+Const_4 0000001C
+
+Symbol: Const_4
+   Definitions
+      At line 26 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 16 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: Const_4 used once
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 2 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      None
+Comment: MyCode unused
+ReservationDirective 00000000
+
+Symbol: ReservationDirective
+   Definitions
+      At line 7 in file src\AssemblerPractice\4ReservationDirective.s
+   Uses
+      At line 6 in file src\AssemblerPractice\4ReservationDirective.s
+Comment: ReservationDirective used once
+7 symbols
+340 symbols in table

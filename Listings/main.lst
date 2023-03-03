@@ -1,0 +1,134 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявление кодовой секции
+    2 00000000                 AREA             MyCode, CODE, ReadOnly
+    3 00000000         ; Основная программа
+    4 00000000         ; Объявление основной программы общедоступной
+    5 00000000                 EXPORT           Main
+    6 00000000         ; Начало основной процедуры
+    7 00000000         Main
+    8 00000000         ; Импорт и переход к подпрограммам 
+    9 00000000         ; по мере изучения Arm Assembler
+   10 00000000         
+   11 00000000         ; Изучение основ Assembler, первые операции
+   12 00000000                 IMPORT           SimpleOperations
+   13 00000000         ;  LDR r0, =SimpleOperations
+   14 00000000         ;  BLX r0
+   15 00000000         
+   16 00000000         ; Загрузка 32-битных констант при помощи
+   17 00000000         ; команды LDR, нюансы работы
+   18 00000000                 IMPORT           _32bitConst
+   19 00000000         ;  LDR r0, =_32bitConst
+   20 00000000         ;  BLX r0
+   21 00000000         
+   22 00000000         ; Принудительное размещение литеральных пулов
+   23 00000000         ; при помощи директивы LTORG
+   24 00000000                 IMPORT           ForcedReservationLTORG
+   25 00000000         ;  LDR r0, = ForcedReservationLTORG
+   26 00000000         ;  BLX r0
+   27 00000000         
+   28 00000000         ; Загрузка данных из кодовой памяти
+   29 00000000         ; по адресам размещения данных
+   30 00000000         ; при помощи Define Code
+   31 00000000                 IMPORT           ReservationDirective
+   32 00000000         ;  LDR r0, =ReservationDirective
+   33 00000000         ;  BLX r0
+   34 00000000         
+   35 00000000         ; Косвенная адресация операндов в памяти
+   36 00000000                 IMPORT           IndirectAddressing
+   37 00000000 4801            LDR              r0, = IndirectAddressing
+   38 00000002 4780            BLX              r0
+   39 00000004         
+   40 00000004         Stop
+   41 00000004 E7FE            B                Stop
+   42 00000006         
+   43 00000006 00 00           ALIGN
+   44 00000008         ; Конец ассемблерного текста
+   45 00000008                 END
+              00000000 
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
+:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
+="ARMCM4_FP SETA 1" --list=.\listings\main.lst src\AssemblerPractice\Main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Main 00000000
+
+Symbol: Main
+   Definitions
+      At line 7 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 5 in file src\AssemblerPractice\Main.s
+Comment: Main used once
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 2 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: MyCode unused
+Stop 00000004
+
+Symbol: Stop
+   Definitions
+      At line 40 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 41 in file src\AssemblerPractice\Main.s
+Comment: Stop used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+ForcedReservationLTORG 00000000
+
+Symbol: ForcedReservationLTORG
+   Definitions
+      At line 24 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: ForcedReservationLTORG unused
+IndirectAddressing 00000000
+
+Symbol: IndirectAddressing
+   Definitions
+      At line 36 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 37 in file src\AssemblerPractice\Main.s
+Comment: IndirectAddressing used once
+ReservationDirective 00000000
+
+Symbol: ReservationDirective
+   Definitions
+      At line 31 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: ReservationDirective unused
+SimpleOperations 00000000
+
+Symbol: SimpleOperations
+   Definitions
+      At line 12 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: SimpleOperations unused
+_32bitConst 00000000
+
+Symbol: _32bitConst
+   Definitions
+      At line 18 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: _32bitConst unused
+5 symbols
+343 symbols in table

@@ -1,0 +1,61 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode, CODE, READONLY
+    3 00000000         ; Объявить точку входа в программу 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           _32bitConst
+    7 00000000         _32bitConst
+    8 00000000         ; Загрузка регистров общего назначения
+    9 00000000         ; константами с использованием
+   10 00000000         ; псевдо-команд загрузки
+   11 00000000 4806            LDR              r0, =0xAB3477CD
+   12 00000002 F06F 0102       LDR              r1, =-3
+   13 00000006 F04F 02F0       LDR              r2, =2_11110000
+   14 0000000A 4B05            LDR              r3, =0xFA5577BE
+   15 0000000C F06F 040D       MOV              r4, #-14
+   16 00000010         ; Демонстрация возможности использования 
+   17 00000010         ; арифметических выражений
+   18 00000010 F04F 0531       LDR              r5, =2_1100 + 37
+   19 00000014 EB02 0605       ADD              r6, r2, r5
+   20 00000018         ;Stop B Stop
+   21 00000018 4770            BX               LR
+   22 0000001A         ; Выравниваем кратным 4 байты вручную, 
+   23 0000001A         ; чтобы избавится от предупреждения
+   24 0000001A 00 00           ALIGN
+   25 0000001C         ; Конец ассемблерного текста
+   26 0000001C                 END
+              AB3477CD 
+              FA5577BE 
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\2_32bitconst.d -o.\objects\2_
+32bitconst.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 
+537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\2_32bitconst.lst src\AssemblerPractice\2_32bitConst.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 2 in file src\AssemblerPractice\2_32bitConst.s
+   Uses
+      None
+Comment: MyCode unused
+_32bitConst 00000000
+
+Symbol: _32bitConst
+   Definitions
+      At line 7 in file src\AssemblerPractice\2_32bitConst.s
+   Uses
+      At line 6 in file src\AssemblerPractice\2_32bitConst.s
+Comment: _32bitConst used once
+2 symbols
+337 symbols in table

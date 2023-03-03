@@ -1,0 +1,51 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Пример обработчика прирывания NMI для замены шаблона
+    2 00000000         ; Объявление кодовой секции для размещения 
+    3 00000000         ; подпрограмм обработчиков прерываний/исключений
+    4 00000000                 AREA             |.text|, CODE, READONLY
+    5 00000000         ; Обработчик немаскируемого прерывания NMI
+    6 00000000         NMI_Handler
+                               PROC
+    7 00000000         ; Объявить процедуру NMI_Handler общедоступной
+    8 00000000         ; опция "Слабая метка" [WEAK] отсуцтвует
+    9 00000000                 EXPORT           NMI_Handler
+   10 00000000         ; Для примера две "пустые операции"
+   11 00000000 BF00            NOP
+   12 00000002 BF00            NOP
+   13 00000004         ; Зациклить программу обработчика
+   14 00000004 E7FE            B                .
+   15 00000006                 ENDP                         ; Конец процедуры NMI_Handler
+   16 00000006         ; Конец ассемблерного текста стартового модуля         
+   17 00000006                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\nmi.d -o.\objects\nmi.o -IC:\
+Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine="
+ARMCM4_FP SETA 1" --list=.\listings\nmi.lst src\StartUpAndInterrupts\NMI.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 4 in file src\StartUpAndInterrupts\NMI.s
+   Uses
+      None
+Comment: .text unused
+NMI_Handler 00000000
+
+Symbol: NMI_Handler
+   Definitions
+      At line 6 in file src\StartUpAndInterrupts\NMI.s
+   Uses
+      At line 9 in file src\StartUpAndInterrupts\NMI.s
+Comment: NMI_Handler used once
+2 symbols
+335 symbols in table

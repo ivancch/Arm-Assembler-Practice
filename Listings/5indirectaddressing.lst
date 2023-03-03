@@ -1,0 +1,155 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           IndirectAddressing
+    7 00000000         IndirectAddressing
+    8 00000000         ; Демонстрация основ косвенной адресации данных
+    9 00000000         ; Загрузить регистр-указатель r0 адресом 
+   10 00000000         ; расположения данных Const_0
+   11 00000000 A011            ADR              r0,Const_0
+   12 00000002         ; Загрузить слово по этому адресу в регистр r5
+   13 00000002 6805            LDR              r5, [r0]
+   14 00000004         ; Выполнить косвенную загрузку еще трех слов
+   15 00000004         ; в регистры r6,r7,r8
+   16 00000004 A011            ADR              r0,Const_1
+   17 00000006 6806            LDR              r6, [r0]
+   18 00000008 A011            ADR              r0,Const_2
+   19 0000000A 6807            LDR              r7, [r0]
+   20 0000000C A011            ADR              r0,Const_3
+   21 0000000E F8D0 8000       LDR              r8, [r0]
+   22 00000012         ; Загрузить регистр-указатель r0 адресом 
+   23 00000012         ; расположения данных Const_0
+   24 00000012         ; Затем загрузить слово по этому адресу в регистр r5
+   25 00000012         ; Повторить всё то же самое но передвигая "каретку"
+   26 00000012 A00D            ADR              r0, Const_0
+   27 00000014 6801            LDR              r1, [r0]
+   28 00000016 F100 0004       ADD              r0, #4
+   29 0000001A 6802            LDR              r2, [r0]
+   30 0000001C F100 0004       ADD              r0, #4
+   31 00000020 6803            LDR              r3, [r0]
+   32 00000022 F100 0004       ADD              r0, #4
+   33 00000026 6804            LDR              r4, [r0]
+   34 00000028         ; То же самое, но только без команды ADD
+   35 00000028         ; А с поставто-инкрементированием указателя
+   36 00000028 A007            ADR              r0, Const_0
+   37 0000002A F850 9B04       LDR              r9,  [r0], #4
+   38 0000002E F850 AB04       LDR              r10, [r0], #4
+   39 00000032 F850 BB04       LDR              r11, [r0], #4
+   40 00000036 F8D0 C000       LDR              r12, [r0]
+   41 0000003A         
+   42 0000003A         ; Задача извлечь из массива слов в кодовой памяти
+   43 0000003A         ; вторую и четвертую константы и найти их
+   44 0000003A         ; сумму с записью результата в регистр r5
+   45 0000003A 00000004 
+                       WORD    EQU              4
+   46 0000003A A003            ADR              r0, Const_0
+   47 0000003C 6841            LDR              r1, [r0, #WORD*1]
+   48 0000003E 68C2            LDR              r2, [r0, #WORD*3]
+   49 00000040 EB01 0502       ADD              r5, r1, r2
+   50 00000044 4770            BX               LR
+   51 00000046         
+   52 00000046 00 00           ALIGN
+   53 00000048         ; Инициализация констант в кодовой памяти
+   54 00000048 7788FFAA 
+                       Const_0 DCD              0x7788FFAA
+   55 0000004C 22221111 
+                       Const_1 DCD              0x22221111
+   56 00000050 22 00 23 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+              00       Const_2 DCW              34,35
+   57 00000054 01 02 03 
+              04       Const_3 DCB              1,2,3,4
+   58 00000058         ; Конец ассемблерного текста
+   59 00000058                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\5indirectaddressing.d -o.\obj
+ects\5indirectaddressing.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION
+_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\5indirectaddressing.lst src\AssemblerPractice\5IndirectAddressin
+g.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Const_0 00000048
+
+Symbol: Const_0
+   Definitions
+      At line 54 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 11 in file src\AssemblerPractice\5IndirectAddressing.s
+      At line 26 in file src\AssemblerPractice\5IndirectAddressing.s
+      At line 36 in file src\AssemblerPractice\5IndirectAddressing.s
+      At line 46 in file src\AssemblerPractice\5IndirectAddressing.s
+
+Const_1 0000004C
+
+Symbol: Const_1
+   Definitions
+      At line 55 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 16 in file src\AssemblerPractice\5IndirectAddressing.s
+Comment: Const_1 used once
+Const_2 00000050
+
+Symbol: Const_2
+   Definitions
+      At line 56 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 18 in file src\AssemblerPractice\5IndirectAddressing.s
+Comment: Const_2 used once
+Const_3 00000054
+
+Symbol: Const_3
+   Definitions
+      At line 57 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 20 in file src\AssemblerPractice\5IndirectAddressing.s
+Comment: Const_3 used once
+IndirectAddressing 00000000
+
+Symbol: IndirectAddressing
+   Definitions
+      At line 7 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 6 in file src\AssemblerPractice\5IndirectAddressing.s
+Comment: IndirectAddressing used once
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 2 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      None
+Comment: MyCode unused
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+WORD 00000004
+
+Symbol: WORD
+   Definitions
+      At line 45 in file src\AssemblerPractice\5IndirectAddressing.s
+   Uses
+      At line 47 in file src\AssemblerPractice\5IndirectAddressing.s
+      At line 48 in file src\AssemblerPractice\5IndirectAddressing.s
+
+1 symbol
+340 symbols in table
