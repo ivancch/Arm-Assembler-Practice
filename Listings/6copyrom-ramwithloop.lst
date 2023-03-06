@@ -1,0 +1,452 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           CopyRomRamWithLoop
+    7 00000000         CopyRomRamWithLoop
+    8 00000000         ; Обявить и присвоить значение переменной N_32
+    9 00000000         ; "Число слов в массиве"
+   10 00000000 00000004 
+                       N_32    EQU              4
+   11 00000000         ; Загрузить параметры и вызвать подпрограмму 
+   12 00000000         ; копирования массива слов
+   13 00000000 A020            ADR              r0, A_ROM
+   14 00000002 492B            LDR              r1, =A_RAM
+   15 00000004 F04F 0204       MOV              r2, #N_32
+   16 00000008         
+   17 00000008         ; Вариант 1
+   18 00000008         ; Выгрузка по слову
+   19 00000008         ;   B Copy_Rom_Ram1
+   20 00000008         
+   21 00000008         ; Вариант 2
+   22 00000008         ; Выгрузка по полуслову
+   23 00000008         ; Умножаем число элементов на 2
+   24 00000008         ; потому что перебираем полуслова
+   25 00000008         ;   MOV r2, r2, LSL #1 ; N_32 * 2
+   26 00000008         ;   B Copy_Rom_Ram2
+   27 00000008         
+   28 00000008         ; Вариант 3
+   29 00000008         ; Выгрузка по байту
+   30 00000008         ; Умножаем число элементов на 4
+   31 00000008         ; потому что перебираем байты
+   32 00000008         ;   MOV r2, r2, LSL #2 ; N_32 * 4
+   33 00000008         ;   B Copy_Rom_Ram3
+   34 00000008         
+   35 00000008         ; Вариант 4
+   36 00000008         ; Перестровить логику цикла
+   37 00000008         ; с пре-проверкой условия
+   38 00000008         ;   B Copy_Rom_Ram4
+   39 00000008         
+   40 00000008         ; Вариант 5
+   41 00000008         ; Считать двойные слова, сложить их,
+   42 00000008         ; и сохранить в оперативную память
+   43 00000008 4B2A            LDR              r3, =Result_of_addition
+   44 0000000A EA4F 0252       MOV              r2, r2, LSR #1 ; N_32 / 2
+   45 0000000E E024            B                Copy_Rom_Ram5
+   46 00000010         
+   47 00000010         ; Зарезервируйте в кодовой секции строку символов “Privet ARM Cor
+                       tex-M4F CPU” c
+   48 00000010         ; использованием директивы DCB. В качестве признака конца стр
+                       оки (прерывателя 
+   49 00000010         ; строки) используйте нулевой байт 0. Напишите подпрограмму �
+                       �опирования в ОЗУ 
+   50 00000010         ; строки символов любой длины, кончающейся «прерывателем». �
+                       �роверьте ее 
+   51 00000010         ; работу в отладчике. 
+   52 00000010         ;   ADR r0, ROM_string1
+   53 00000010         ;   LDR r1, =RAM_string1
+   54 00000010         ;   B Copy_Rom_Ram6
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   55 00000010         
+   56 00000010         Back
+   57 00000010         ; Выход из программы
+   58 00000010 4770            BX               lr
+   59 00000012         ; ********************************************
+   60 00000012         ; Подпрограмма копирования слов из ПЗУ в ОЗУ
+   61 00000012         ; Входные параметры:
+   62 00000012         ; r0 - начальный адрес массива слов в ПЗУ
+   63 00000012         ; r1 - начальный адрес массива слов в ОЗУ
+   64 00000012         ; r2 - число элементов массива
+   65 00000012         ; Используемые регистры:
+   66 00000012         ; r3 - для временного хранения слов
+   67 00000012         ; ********************************************
+   68 00000012         ; Точка входа в подпрограмму
+   69 00000012         Copy_Rom_Ram1
+   70 00000012         ; Cчитать текущее слово из ПЗУ и сохранить в ОЗУ
+   71 00000012         ; с использованием базовой адресации с пост-смещением
+   72 00000012 F850 3B04       LDR              r3, [r0], #4
+   73 00000016 F841 3B04       STR              r3, [r1], #4
+   74 0000001A         ; Декрементировать счетчик числа элементов массива
+   75 0000001A F1A2 0201       SUB              r2, #1
+   76 0000001E         ; Сравнить с нулем (все ли слова скопированы?)
+   77 0000001E 2A00            CMP              r2, #0
+   78 00000020         ; Если не все - повторить операцию копирования
+   79 00000020 D1F7            BNE              Copy_Rom_Ram1
+   80 00000022         ; Все слова скопированы, возврат в основную программу
+   81 00000022 E7F5            B                Back
+   82 00000024         ; ***** Конец Варианта 1  *****
+   83 00000024         ; ***** Начало Варианта 2 *****
+   84 00000024         Copy_Rom_Ram2
+   85 00000024 F830 3B02       LDRH             r3, [r0], #2
+   86 00000028 F821 3B02       STRH             r3, [r1], #2
+   87 0000002C F1A2 0201       SUB              r2, #1
+   88 00000030 2A00            CMP              r2, #0
+   89 00000032 D1F7            BNE              Copy_Rom_Ram2
+   90 00000034         ; Все слова скопированы, возврат в основную программу
+   91 00000034 E7EC            B                Back
+   92 00000036         ; ***** Конец Варианта 2  *****
+   93 00000036         ; ***** Начало Варианта 3 *****
+   94 00000036         Copy_Rom_Ram3
+   95 00000036 F810 3B01       LDRB             r3, [r0], #1
+   96 0000003A F801 3B01       STRB             r3, [r1], #1
+   97 0000003E F1A2 0201       SUB              r2, #1
+   98 00000042 2A00            CMP              r2, #0
+   99 00000044 D1F7            BNE              Copy_Rom_Ram3
+  100 00000046 E7E3            B                Back
+  101 00000048         ; ***** Конец Варианта 3  *****
+  102 00000048         ; ***** Начало Варианта 4 *****
+  103 00000048         Copy_Rom_Ram4
+  104 00000048         ; Загрузить в регистр временного хранения r3
+  105 00000048         ; текущее число нескопированных элементов массива
+  106 00000048         ; c установкой флагов (суффикс "S")
+  107 00000048 0013            MOVS             r3, r2
+  108 0000004A         ; Если все элементы скопированы, выйти из подпрограммы
+  109 0000004A D0E1            BEQ              Back
+  110 0000004C         ; Cчитать текущий байт из ПЗУ и сохранить в ОЗУ
+  111 0000004C         ; с использованием базовой адресации с пост-смещением
+  112 0000004C F850 3B04       LDR              r3, [r0], #4
+  113 00000050 F841 3B04       STR              r3, [r1], #4
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  114 00000054         ; Декрементировать счетчик числа элементов массива
+  115 00000054 F1A2 0201       SUB              r2, #1
+  116 00000058         ; Переход в начало подпрограммы
+  117 00000058 E7F6            B                Copy_Rom_Ram4
+  118 0000005A         ; ***** Конец Варианта 4  *****
+  119 0000005A         ; ***** Начало Варианта 5 *****
+  120 0000005A         Copy_Rom_Ram5
+  121 0000005A         ; Проверка на условие выполнения цикла
+  122 0000005A 0012            MOVS             r2, r2
+  123 0000005C D0D8            BEQ              Back
+  124 0000005E         ; Логика программы: считывание, копирование
+  125 0000005E         ; И сложение между собой двойных слов
+  126 0000005E E8F0 4502       LDRD             r4, r5, [r0], #8
+  127 00000062 E8E1 4502       STRD             r4, r5, [r1], #8
+  128 00000066 EB04 0605       ADD              r6, r4, r5
+  129 0000006A F843 6B04       STR              r6, [r3], #4
+  130 0000006E F1A2 0201       SUB              r2, #1
+  131 00000072 E7F2            B                Copy_Rom_Ram5
+  132 00000074         ; ***** Конец Варианта 5  *****
+  133 00000074         ; ***** Начало Варианта 6 *****
+  134 00000074         Copy_Rom_Ram6
+  135 00000074 F810 2B01       LDRB             r2, [r0], #1
+  136 00000078 F801 2B01       STRB             r2, [r1], #1
+  137 0000007C 2A00            CMP              r2, #0
+  138 0000007E D0C7            BEQ              Back
+  139 00000080 E7F8            B                Copy_Rom_Ram6
+  140 00000082         ; ***** Конец Варианта 6  *****
+  141 00000082         
+  142 00000082 00 00           ALIGN
+  143 00000084         
+  144 00000084         ; Инициализация констант в текущей кодовой секции
+  145 00000084         A_ROM
+  146 00000084 7788FFAA 
+                       Const_0 DCD              0x7788FFAA
+  147 00000088 22221111 
+                       Const_1 DCD              0x22221111
+  148 0000008C 22 00 23 
+              00       Const_2 DCW              34,35
+  149 00000090 01 02 03 
+              04       Condt_3 DCB              1,2,3,4
+  150 00000094         
+  151 00000094 50 72 69 
+              76 65 74 
+              20 41 52 
+              4D 20 43 
+              6F 72 74 
+              65 78 2D 
+              4D 34 46 
+              20 43 50 
+              55 00    ROM_string1
+                               DCB              "Privet ARM Cortex-M4F CPU", 0
+  152 000000AE 00 00           ALIGN
+  153 000000B0         
+  154 000000B0         ; Объявить секцию данных в оперативной памяти
+  155 000000B0 00000000 
+              00000000         AREA             MyData, DATA, ReadWrite
+  156 00000000         ; Зарезервировать в ней 100 слов
+  157 00000000 00 00 00 
+              00 00 00 
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00       A_RAM   SPACE            4*N_32      ; Для 4-х констат
+  158 00000010         Result_of_addition
+  159 00000010 00 00 00 
+              00 00 00 
+              00 00            SPACE            2*N_32      ; Для результата сложения
+  160 00000018 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 RAM_string1
+                               SPACE            102         ; Для текста string1
+  161 0000007E         ; Конец ассемблерного текста
+  162 0000007E                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\6copyrom-ramwithloop.d -o.\ob
+jects\6copyrom-ramwithloop.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
+ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\6copyrom-ramwithloop.lst src\AssemblerPractice\6CopyRom-RamWit
+hLoop.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+A_ROM 00000084
+
+Symbol: A_ROM
+   Definitions
+      At line 145 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 13 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: A_ROM used once
+Back 00000010
+
+Symbol: Back
+   Definitions
+      At line 56 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 81 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 91 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 100 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 109 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 123 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 138 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+
+Condt_3 00000090
+
+Symbol: Condt_3
+   Definitions
+      At line 149 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: Condt_3 unused
+Const_0 00000084
+
+Symbol: Const_0
+   Definitions
+      At line 146 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: Const_0 unused
+Const_1 00000088
+
+Symbol: Const_1
+   Definitions
+      At line 147 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: Const_1 unused
+Const_2 0000008C
+
+Symbol: Const_2
+   Definitions
+      At line 148 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: Const_2 unused
+CopyRomRamWithLoop 00000000
+
+Symbol: CopyRomRamWithLoop
+   Definitions
+      At line 7 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 6 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: CopyRomRamWithLoop used once
+Copy_Rom_Ram1 00000012
+
+Symbol: Copy_Rom_Ram1
+   Definitions
+      At line 69 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 79 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Copy_Rom_Ram1 used once
+Copy_Rom_Ram2 00000024
+
+Symbol: Copy_Rom_Ram2
+   Definitions
+      At line 84 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 89 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Copy_Rom_Ram2 used once
+Copy_Rom_Ram3 00000036
+
+Symbol: Copy_Rom_Ram3
+   Definitions
+      At line 94 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 99 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Copy_Rom_Ram3 used once
+Copy_Rom_Ram4 00000048
+
+Symbol: Copy_Rom_Ram4
+   Definitions
+      At line 103 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 117 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Copy_Rom_Ram4 used once
+Copy_Rom_Ram5 0000005A
+
+Symbol: Copy_Rom_Ram5
+   Definitions
+      At line 120 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 45 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 131 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+
+Copy_Rom_Ram6 00000074
+
+Symbol: Copy_Rom_Ram6
+   Definitions
+      At line 134 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 139 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Copy_Rom_Ram6 used once
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 2 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: MyCode unused
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+ROM_string1 00000094
+
+Symbol: ROM_string1
+   Definitions
+      At line 151 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: ROM_string1 unused
+15 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+A_RAM 00000000
+
+Symbol: A_RAM
+   Definitions
+      At line 157 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 14 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: A_RAM used once
+MyData 00000000
+
+Symbol: MyData
+   Definitions
+      At line 155 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: MyData unused
+RAM_string1 00000018
+
+Symbol: RAM_string1
+   Definitions
+      At line 160 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      None
+Comment: RAM_string1 unused
+Result_of_addition 00000010
+
+Symbol: Result_of_addition
+   Definitions
+      At line 158 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 43 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+Comment: Result_of_addition used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+N_32 00000004
+
+Symbol: N_32
+   Definitions
+      At line 10 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+   Uses
+      At line 15 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 157 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+      At line 159 in file src\AssemblerPractice\6CopyRom-RamWithLoop.s
+
+1 symbol
+355 symbols in table

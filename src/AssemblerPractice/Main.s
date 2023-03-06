@@ -34,13 +34,19 @@ Main
 
 	; Косвенная адресация операндов в памяти
 		IMPORT IndirectAddressing
-		LDR r0, = IndirectAddressing
+;		LDR r0, =IndirectAddressing
+;		BLX r0
+
+	; Копирование данных из ПЗУ в ОЗУ
+	; При помощи цикла с пост-проверкой
+		IMPORT CopyRomRamWithLoop
+		LDR r0, =CopyRomRamWithLoop
 		BLX r0
-	
+
 Stop	
-		B Stop
+ 		B Stop
 
 		ALIGN
 ; Конец ассемблерного текста
-				END
+		END
 					

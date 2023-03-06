@@ -40,15 +40,21 @@ ARM Macro Assembler    Page 1
    34 00000000         
    35 00000000         ; Косвенная адресация операндов в памяти
    36 00000000                 IMPORT           IndirectAddressing
-   37 00000000 4801            LDR              r0, = IndirectAddressing
-   38 00000002 4780            BLX              r0
-   39 00000004         
-   40 00000004         Stop
-   41 00000004 E7FE            B                Stop
-   42 00000006         
-   43 00000006 00 00           ALIGN
-   44 00000008         ; Конец ассемблерного текста
-   45 00000008                 END
+   37 00000000         ;  LDR r0, =IndirectAddressing
+   38 00000000         ;  BLX r0
+   39 00000000         
+   40 00000000         ; Копирование данных из ПЗУ в ОЗУ
+   41 00000000         ; При помощи цикла с пост-проверкой
+   42 00000000                 IMPORT           CopyRomRamWithLoop
+   43 00000000 4801            LDR              r0, =CopyRomRamWithLoop
+   44 00000002 4780            BLX              r0
+   45 00000004         
+   46 00000004         Stop
+   47 00000004 E7FE            B                Stop
+   48 00000006         
+   49 00000006 00 00           ALIGN
+   50 00000008         ; Конец ассемблерного текста
+   51 00000008                 END
               00000000 
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
@@ -79,9 +85,9 @@ Stop 00000004
 
 Symbol: Stop
    Definitions
-      At line 40 in file src\AssemblerPractice\Main.s
+      At line 46 in file src\AssemblerPractice\Main.s
    Uses
-      At line 41 in file src\AssemblerPractice\Main.s
+      At line 47 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -90,6 +96,14 @@ Comment: Stop used once
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 External symbols
 
+CopyRomRamWithLoop 00000000
+
+Symbol: CopyRomRamWithLoop
+   Definitions
+      At line 42 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 43 in file src\AssemblerPractice\Main.s
+Comment: CopyRomRamWithLoop used once
 ForcedReservationLTORG 00000000
 
 Symbol: ForcedReservationLTORG
@@ -104,8 +118,8 @@ Symbol: IndirectAddressing
    Definitions
       At line 36 in file src\AssemblerPractice\Main.s
    Uses
-      At line 37 in file src\AssemblerPractice\Main.s
-Comment: IndirectAddressing used once
+      None
+Comment: IndirectAddressing unused
 ReservationDirective 00000000
 
 Symbol: ReservationDirective
@@ -130,5 +144,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-5 symbols
-343 symbols in table
+6 symbols
+344 symbols in table
