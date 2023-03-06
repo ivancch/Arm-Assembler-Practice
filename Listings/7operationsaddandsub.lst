@@ -1,0 +1,173 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode7, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           OperationsAddAndSub
+    7 00000000         OperationsAddAndSub
+    8 00000000         
+    9 00000000         ; Первая вариация программы
+   10 00000000         ; простейшего сложение и вычитания
+   11 00000000         ; Данные в память вводятся вручную
+   12 00000000 E000            B                Variation_1
+   13 00000002         
+   14 00000002         ;Выход из подпрограммы 
+   15 00000002         Back
+   16 00000002 4770            BX               LR
+   17 00000004         
+   18 00000004         Variation_1
+   19 00000004         ; Операции сложения/вычитания слов
+   20 00000004         ; Выполнить попарное сложение/вычитание 
+   21 00000004         ; 32-разрядных слов из массива Array_W. 
+   22 00000004         ; Сохранить суммы в памяти по адресу Sum_W
+   23 00000004         ; Сохранить разности в памяти по адресу Sub_W
+   24 00000004         ; Инициализация указателей
+   25 00000004 480A            LDR              r0, =Array_W
+   26 00000006 490B            LDR              r1, =Sum_W
+   27 00000008 4A0B            LDR              r2, =Sub_W
+   28 0000000A F04F 0302       MOV              r3, #2      ; Число итераций
+   29 0000000E         Loop
+   30 0000000E         ; Проверка условия выхода и выход
+   31 0000000E 001B            MOVS             r3, r3
+   32 00000010 D0F7            BEQ              Back
+   33 00000012         ; Тело функции
+   34 00000012 F850 4B04       LDR              r4, [r0], #4
+   35 00000016 F850 5B04       LDR              r5, [r0], #4
+   36 0000001A 1966            ADDS             r6, r4, r5
+   37 0000001C F841 6B04       STR              r6, [r1], #4
+   38 00000020 1B66            SUBS             r6, r4, r5
+   39 00000022 F842 6B04       STR              r6, [r2], #4
+   40 00000026         ; Вычитаем шаг из цикла и зацикливаем программу
+   41 00000026 F1A3 0301       SUB              r3, #1
+   42 0000002A E7F0            B                Loop
+   43 0000002C         ; Выход из подпрограммы    
+   44 0000002C E7E9            B                Back
+   45 0000002E         
+   46 0000002E         
+   47 0000002E 00 00           ALIGN
+   48 00000030         ; Объявить секцию данных в оперативной памяти
+   49 00000030 00000000 
+              00000000 
+              00000000         AREA             MyData7, DATA, ReadWrite
+   50 00000000         ; Зарезервировать в ней 4-е 32-разрядных слова
+   51 00000000         ; источников данных (без инициализации)
+   52 00000000 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00       Array_W SPACE            4*4
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   53 00000010         ; Зарезервировать в ОЗУ место для размещения 
+   54 00000010         ; результов сложения и вычитания слов
+   55 00000010 00 00 00 
+              00 00 00 
+              00 00    Sum_W   SPACE            4*2
+   56 00000018 00 00 00 
+              00 00 00 
+              00 00    Sub_W   SPACE            4*2
+   57 00000020         ; Конец ассемблерного текста
+   58 00000020                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\7operationsaddandsub.d -o.\ob
+jects\7operationsaddandsub.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
+ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\7operationsaddandsub.lst src\AssemblerPractice\7OperationsAddA
+ndSub.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Back 00000002
+
+Symbol: Back
+   Definitions
+      At line 15 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 32 in file src\AssemblerPractice\7OperationsAddAndSub.s
+      At line 44 in file src\AssemblerPractice\7OperationsAddAndSub.s
+
+Loop 0000000E
+
+Symbol: Loop
+   Definitions
+      At line 29 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 42 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: Loop used once
+MyCode7 00000000
+
+Symbol: MyCode7
+   Definitions
+      At line 2 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      None
+Comment: MyCode7 unused
+OperationsAddAndSub 00000000
+
+Symbol: OperationsAddAndSub
+   Definitions
+      At line 7 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 6 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: OperationsAddAndSub used once
+Variation_1 00000004
+
+Symbol: Variation_1
+   Definitions
+      At line 18 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 12 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: Variation_1 used once
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Array_W 00000000
+
+Symbol: Array_W
+   Definitions
+      At line 52 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 25 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: Array_W used once
+MyData7 00000000
+
+Symbol: MyData7
+   Definitions
+      At line 49 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      None
+Comment: MyData7 unused
+Sub_W 00000018
+
+Symbol: Sub_W
+   Definitions
+      At line 56 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 27 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: Sub_W used once
+Sum_W 00000010
+
+Symbol: Sum_W
+   Definitions
+      At line 55 in file src\AssemblerPractice\7OperationsAddAndSub.s
+   Uses
+      At line 26 in file src\AssemblerPractice\7OperationsAddAndSub.s
+Comment: Sum_W used once
+4 symbols
+344 symbols in table

@@ -46,16 +46,29 @@ ARM Macro Assembler    Page 1
    40 00000000         ; Копирование данных из ПЗУ в ОЗУ
    41 00000000         ; При помощи цикла с пост-проверкой
    42 00000000                 IMPORT           CopyRomRamWithLoop
-   43 00000000 4801            LDR              r0, =CopyRomRamWithLoop
-   44 00000002 4780            BLX              r0
-   45 00000004         
-   46 00000004         Stop
-   47 00000004 E7FE            B                Stop
-   48 00000006         
-   49 00000006 00 00           ALIGN
-   50 00000008         ; Конец ассемблерного текста
-   51 00000008                 END
+   43 00000000         ;  LDR r0, =CopyRomRamWithLoop
+   44 00000000         ;  BLX r0
+   45 00000000         
+   46 00000000         ; Операции сложения и вычитания 
+   47 00000000         ; в различных вариациях
+   48 00000000         ; с сохранением результата в ОЗУ
+   49 00000000                 IMPORT           OperationsAddAndSub
+   50 00000000 4801            LDR              r0, =OperationsAddAndSub
+   51 00000002 4780            BLX              r0
+   52 00000004         
+   53 00000004         Stop
+   54 00000004 E7FE            B                Stop
+   55 00000006         
+   56 00000006 00 00           ALIGN
+   57 00000008         ; Конец ассемблерного текста
+   58 00000008                 END
               00000000 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
 ="ARMCM4_FP SETA 1" --list=.\listings\main.lst src\AssemblerPractice\Main.s
@@ -85,9 +98,9 @@ Stop 00000004
 
 Symbol: Stop
    Definitions
-      At line 46 in file src\AssemblerPractice\Main.s
+      At line 53 in file src\AssemblerPractice\Main.s
    Uses
-      At line 47 in file src\AssemblerPractice\Main.s
+      At line 54 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -102,8 +115,8 @@ Symbol: CopyRomRamWithLoop
    Definitions
       At line 42 in file src\AssemblerPractice\Main.s
    Uses
-      At line 43 in file src\AssemblerPractice\Main.s
-Comment: CopyRomRamWithLoop used once
+      None
+Comment: CopyRomRamWithLoop unused
 ForcedReservationLTORG 00000000
 
 Symbol: ForcedReservationLTORG
@@ -120,6 +133,14 @@ Symbol: IndirectAddressing
    Uses
       None
 Comment: IndirectAddressing unused
+OperationsAddAndSub 00000000
+
+Symbol: OperationsAddAndSub
+   Definitions
+      At line 49 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 50 in file src\AssemblerPractice\Main.s
+Comment: OperationsAddAndSub used once
 ReservationDirective 00000000
 
 Symbol: ReservationDirective
@@ -144,5 +165,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-6 symbols
-344 symbols in table
+7 symbols
+345 symbols in table

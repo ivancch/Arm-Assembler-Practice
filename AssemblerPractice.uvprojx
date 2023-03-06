@@ -434,6 +434,11 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\6CopyRom-RamWithLoop.s</FilePath>
             </File>
+            <File>
+              <FileName>7OperationsAddAndSub.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\7OperationsAddAndSub.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

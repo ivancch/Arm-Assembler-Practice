@@ -40,9 +40,16 @@ Main
 	; Копирование данных из ПЗУ в ОЗУ
 	; При помощи цикла с пост-проверкой
 		IMPORT CopyRomRamWithLoop
-		LDR r0, =CopyRomRamWithLoop
-		BLX r0
+;		LDR r0, =CopyRomRamWithLoop
+;		BLX r0
 
+	; Операции сложения и вычитания 
+	; в различных вариациях
+	; с сохранением результата в ОЗУ
+		IMPORT OperationsAddAndSub
+		LDR r0, =OperationsAddAndSub
+		BLX r0
+	
 Stop	
  		B Stop
 
