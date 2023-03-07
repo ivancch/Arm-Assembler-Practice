@@ -439,6 +439,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\7OperationsAddAndSub.s</FilePath>
             </File>
+            <File>
+              <FileName>8AddAndSubDWordMACRO.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\8AddAndSubDWordMACRO.s</FilePath>
+            </File>
+            <File>
+              <FileName>MyMacro1.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\MyMacro1.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

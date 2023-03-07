@@ -1,0 +1,351 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Подключить библиотеку макроопределений 
+    2 00000000                 GET              MyMacro1.s
+    1 00000000         ; Библиотека макроопределений пользователя
+    2 00000000         ; Макроопределение загрузки двух двойных слов из памяти
+    3 00000000         ; в регистры процессора, начиная с адреса в $A_D
+    4 00000000                 MACRO
+    5 00000000                 D_LOAD           $D1_H, $D1_L, $D2_H, $D2_L, $A_D
+    6 00000000         ; Загрузить последовательно 4-е слова с пост-смещением
+    7 00000000         ; указателя на 4 байта
+    8 00000000                 LDR              $D1_L, [$A_D], #4
+    9 00000000                 LDR              $D1_H, [$A_D], #4
+   10 00000000                 LDR              $D2_L, [$A_D], #4
+   11 00000000                 LDR              $D2_H, [$A_D], #4
+   12 00000000                 MEND
+   13 00000000         
+   14 00000000         ; Макроопределение операции сохранения тройного слова
+   15 00000000         ; из регистров ЦПУ в память, начиная с адреса $A_D
+   16 00000000                 MACRO
+   17 00000000                 SAVE_3W          $R_H, $R_W, $R_L, $A_D
+   18 00000000                 STR              $R_L, [$A_D], #4
+   19 00000000                 STR              $R_W, [$A_D], #4
+   20 00000000                 STR              $R_H, [$A_D], #4
+   21 00000000                 MEND
+   22 00000000         
+   23 00000000         ; Макроопределение операции сложния двойных слов
+   24 00000000                 MACRO
+   25 00000000                 D_ADD            $D1_H, $D1_L, $D2_H, $D2_L, $R_H, $R_W, $R_L
+   26 00000000         ; Сумма младших слов
+   27 00000000                 ADDS             $R_L, $D1_L, $D2_L
+   28 00000000         ; Сумма старших слов
+   29 00000000                 ADCS             $R_W, $D1_H, $D2_H
+   30 00000000         ; Учет возможного переполнения 
+   31 00000000                 MOV              $R_H, #0
+   32 00000000                 ADC              $R_H, #0
+   33 00000000                 MEND
+   34 00000000         
+   35 00000000         
+   36 00000000         ; Макроопределение операции вычитания двойных слов
+   37 00000000                 MACRO
+   38 00000000                 D_SUB            $D1_H, $D1_L, $D2_H, $D2_L, $R_H, $R_W, $R_L
+   39 00000000         ; Разность младших слов
+   40 00000000                 SUBS             $R_L, $D1_L, $D2_L
+   41 00000000         ; Разность старших слов
+   42 00000000                 SBCS             $R_W, $D1_H, $D2_H
+   43 00000000         ; Учет возможного "заема" 
+   44 00000000                 MOV              $R_H, #0
+   45 00000000                 SBC              $R_H, #0
+   46 00000000                 MEND
+   47 00000000         
+   48 00000000                 END
+    3 00000000         ; Объявить кодовую секцию MyCode
+    4 00000000                 AREA             MyCode8, CODE, ReadOnly
+    5 00000000         ; Объявить точку входа в программу приложения 
+    6 00000000                 ENTRY
+    7 00000000         ; Объвить точку входа глобальной переменной
+    8 00000000                 EXPORT           AddAndSubDWord
+    9 00000000         AddAndSubDWord
+   10 00000000         
+   11 00000000         ; Сложение и вычитание двух слов
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   12 00000000         ;   B Variation_1
+   13 00000000         
+   14 00000000         ; Сложение и вычитание двух слов
+   15 00000000         ; используя макрокоманды
+   16 00000000         ;   B Variation_2
+   17 00000000         
+   18 00000000         ; Загрузка из ОЗУ двойных слов и выгрузка
+   19 00000000         ; туда же результата их сложение и вычитания
+   20 00000000         ; при помощи макрокоманд
+   21 00000000 E026            B                Variation_3
+   22 00000002         
+   23 00000002         ; Выход из подпрограммы
+   24 00000002         Back
+   25 00000002 4770            BX               lr
+   26 00000004         
+   27 00000004         Variation_1
+   28 00000004         ; Вычисление суммы и разности двух двойных слов
+   29 00000004         ; Инициализация первого двойного слова
+   30 00000004 4A25            LDR              r2, =0xff225555
+   31 00000006 4926            LDR              r1, =0x4444aaaa
+   32 00000008         ; Инициализация второго двойного слова
+   33 00000008 4C26            LDR              r4, =0x22113333
+   34 0000000A 4B27            LDR              r3, =0xBBBB2222
+   35 0000000C         ; Расчет суммы двойных слов
+   36 0000000C         SUM_D
+   37 0000000C         ; Сумма младших слов
+   38 0000000C 18CD            ADDS             r5, r1, r3
+   39 0000000E         ; Сумма старших слов
+   40 0000000E EB52 0604       ADCS             r6, r2, r4
+   41 00000012         ; Учет возможного переполнения 
+   42 00000012 F04F 0700       MOV              r7, #0
+   43 00000016 F147 0700       ADC              r7, #0
+   44 0000001A         ; Расчет разности двойных слов
+   45 0000001A         SUB_D
+   46 0000001A         ; Разность младших слов
+   47 0000001A 1ACD            SUBS             r5, r1, r3
+   48 0000001C         ; Разность старших слов
+   49 0000001C EB72 0604       SBCS             r6, r2, r4
+   50 00000020         ; Учет возможного "заема" 
+   51 00000020 F04F 0700       MOV              r7, #0
+   52 00000024 F167 0700       SBC              r7, #0
+   53 00000028         ; Выход из подпрограммы
+   54 00000028 E7EB            B                Back
+   55 0000002A         
+   56 0000002A         
+   57 0000002A         
+   58 0000002A         Variation_2
+   59 0000002A         ; Вычисление суммы и разности двух двойных слов
+   60 0000002A         ; Инициализация первого двойного слова
+   61 0000002A 4A1C            LDR              r2,=0xFF225555
+   62 0000002C 491C            LDR              r1,=0x4444AAAA
+   63 0000002E         ; Инициализация второго двойного слова
+   64 0000002E 4C1D            LDR              r4,=0x22113333
+   65 00000030 4B1D            LDR              r3,=0xBBBB2222
+   66 00000032         ; Расчет суммы двойных слов
+   67 00000032         SUM_D_v2
+   68 00000032         ; Макровызов операции сложения двойных слов 
+   69 00000032                 D_ADD            r2, r1, r4, r3, r7, r6, r5
+   26 00000032         ; Сумма младших слов
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   27 00000032 18CD            ADDS             r5, r1, r3
+   28 00000034         ; Сумма старших слов
+   29 00000034 EB52 0604       ADCS             r6, r2, r4
+   30 00000038         ; Учет возможного переполнения 
+   31 00000038 F04F 0700       MOV              r7, #0
+   32 0000003C F147 0700       ADC              r7, #0
+   70 00000040         ; Расчет разности двойных слов
+   71 00000040                 D_SUB            r2, r1, r4, r3, r7, r6, r5
+   39 00000040         ; Разность младших слов
+   40 00000040 1ACD            SUBS             r5, r1, r3
+   41 00000042         ; Разность старших слов
+   42 00000042 EB72 0604       SBCS             r6, r2, r4
+   43 00000046         ; Учет возможного "заема" 
+   44 00000046 F04F 0700       MOV              r7, #0
+   45 0000004A F167 0700       SBC              r7, #0
+   72 0000004E         ; Макровызов операции вычитания двойных слов
+   73 0000004E         ; Выход из подпрограммы
+   74 0000004E E7D8            B                Back
+   75 00000050         
+   76 00000050         Variation_3
+   77 00000050         
+   78 00000050         ; Начальный адрес массива двойных слов в памяти
+   79 00000050 4816            LDR              r0, =RAM_0
+   80 00000052         ; Загрузить пару двойных слов в регистры ЦПУ из памяти
+   81 00000052         ; E int 0x200000A0=0xFF225555,0x4444AAAA,0x22113333,0xBBBB2222
+   82 00000052                 D_LOAD           r1, r2, r3, r4, r0
+    6 00000052         ; Загрузить последовательно 4-е слова с пост-смещением
+    7 00000052         ; указателя на 4 байта
+    8 00000052 F850 2B04       LDR              r2, [r0], #4
+    9 00000056 F850 1B04       LDR              r1, [r0], #4
+   10 0000005A F850 4B04       LDR              r4, [r0], #4
+   11 0000005E F850 3B04       LDR              r3, [r0], #4
+   83 00000062         ; Расчет суммы двойных слов
+   84 00000062                 D_ADD            r2, r1, r4, r3, r7, r6, r5
+   26 00000062         ; Сумма младших слов
+   27 00000062 18CD            ADDS             r5, r1, r3
+   28 00000064         ; Сумма старших слов
+   29 00000064 EB52 0604       ADCS             r6, r2, r4
+   30 00000068         ; Учет возможного переполнения 
+   31 00000068 F04F 0700       MOV              r7, #0
+   32 0000006C F147 0700       ADC              r7, #0
+   85 00000070         ; Начальный адрес массива для результата слов в памяти
+   86 00000070 480F            LDR              r0, =Result
+   87 00000072         ; Сохранение трех слов результата сложения в памяти
+   88 00000072                 SAVE_3W          r7, r6, r5, r0
+   18 00000072 F840 5B04       STR              r5, [r0], #4
+   19 00000076 F840 6B04       STR              r6, [r0], #4
+   20 0000007A F840 7B04       STR              r7, [r0], #4
+   89 0000007E                 D_SUB            r2, r1, r4, r3, r7, r6, r5
+   39 0000007E         ; Разность младших слов
+   40 0000007E 1ACD            SUBS             r5, r1, r3
+   41 00000080         ; Разность старших слов
+   42 00000080 EB72 0604       SBCS             r6, r2, r4
+   43 00000084         ; Учет возможного "заема" 
+   44 00000084 F04F 0700       MOV              r7, #0
+   45 00000088 F167 0700       SBC              r7, #0
+   90 0000008C         ; Сохранение трех слов результата вычитания в памяти
+   91 0000008C                 SAVE_3W          r7, r6, r5, r0
+   18 0000008C F840 5B04       STR              r5, [r0], #4
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+   19 00000090 F840 6B04       STR              r6, [r0], #4
+   20 00000094 F840 7B04       STR              r7, [r0], #4
+   92 00000098         ; завершение подпрограммы
+   93 00000098 E7B3            B                Back
+   94 0000009A         
+   95 0000009A 00 00           ALIGN
+   96 0000009C         
+   97 0000009C FF225555 
+              4444AAAA 
+              22113333 
+              BBBB2222 
+              00000000 
+              00000000         AREA             MyData8, DATA, ReadWrite
+   98 00000000 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00       RAM_0   SPACE            4*4
+   99 00000010 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 Result  SPACE            3*4
+  100 0000001C         
+  101 0000001C         
+  102 0000001C         ; Конец ассемблерного текста
+  103 0000001C                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\8addandsubdwordmacro.d -o.\ob
+jects\8addandsubdwordmacro.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
+ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\8addandsubdwordmacro.lst src\AssemblerPractice\8AddAndSubDWord
+MACRO.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+AddAndSubDWord 00000000
+
+Symbol: AddAndSubDWord
+   Definitions
+      At line 9 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      At line 8 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+Comment: AddAndSubDWord used once
+Back 00000002
+
+Symbol: Back
+   Definitions
+      At line 24 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      At line 54 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+      At line 74 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+      At line 93 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+
+MyCode8 00000000
+
+Symbol: MyCode8
+   Definitions
+      At line 4 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: MyCode8 unused
+SUB_D 0000001A
+
+Symbol: SUB_D
+   Definitions
+      At line 45 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: SUB_D unused
+SUM_D 0000000C
+
+Symbol: SUM_D
+   Definitions
+      At line 36 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: SUM_D unused
+SUM_D_v2 00000032
+
+Symbol: SUM_D_v2
+   Definitions
+      At line 67 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: SUM_D_v2 unused
+Variation_1 00000004
+
+Symbol: Variation_1
+   Definitions
+      At line 27 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: Variation_1 unused
+Variation_2 0000002A
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: Variation_2
+   Definitions
+      At line 58 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: Variation_2 unused
+Variation_3 00000050
+
+Symbol: Variation_3
+   Definitions
+      At line 76 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      At line 21 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+Comment: Variation_3 used once
+9 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyData8 00000000
+
+Symbol: MyData8
+   Definitions
+      At line 97 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      None
+Comment: MyData8 unused
+RAM_0 00000000
+
+Symbol: RAM_0
+   Definitions
+      At line 98 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      At line 79 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+Comment: RAM_0 used once
+Result 00000010
+
+Symbol: Result
+   Definitions
+      At line 99 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+   Uses
+      At line 86 in file src\AssemblerPractice\8AddAndSubDWordMACRO.s
+Comment: Result used once
+3 symbols
+347 symbols in table

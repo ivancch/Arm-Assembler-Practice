@@ -47,8 +47,15 @@ Main
 	; в различных вариациях
 	; с сохранением результата в ОЗУ
 		IMPORT OperationsAddAndSub
-		LDR r0, =OperationsAddAndSub
+;		LDR r0, =OperationsAddAndSub
+;		BLX r0
+	
+	; Cложение и вычитание двойного слова
+	; в том числе с использованием макрокоманды
+		IMPORT AddAndSubDWord
+		LDR r0, =AddAndSubDWord
 		BLX r0
+	
 	
 Stop	
  		B Stop

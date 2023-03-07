@@ -11,12 +11,14 @@ Section Cross References
     main.o(MyCode) refers (Special) to 6copyrom-ramwithloop.o(MyCode) for CopyRomRamWithLoop
     main.o(MyCode) refers (Special) to 3forcedreservationltorg.o(MyCode) for ForcedReservationLTORG
     main.o(MyCode) refers (Special) to 5indirectaddressing.o(MyCode) for IndirectAddressing
+    main.o(MyCode) refers (Special) to 7operationsaddandsub.o(MyCode7) for OperationsAddAndSub
     main.o(MyCode) refers (Special) to 4reservationdirective.o(MyCode) for ReservationDirective
     main.o(MyCode) refers (Special) to 1simpleoperations.o(MyCode) for SimpleOperations
     main.o(MyCode) refers (Special) to 2_32bitconst.o(MyCode) for _32bitConst
-    main.o(MyCode) refers to 7operationsaddandsub.o(MyCode7) for OperationsAddAndSub
+    main.o(MyCode) refers to 8addandsubdwordmacro.o(MyCode8) for AddAndSubDWord
     6copyrom-ramwithloop.o(MyCode) refers to 6copyrom-ramwithloop.o(MyData) for A_RAM
     7operationsaddandsub.o(MyCode7) refers to 7operationsaddandsub.o(MyData7) for Array_W
+    8addandsubdwordmacro.o(MyCode8) refers to 8addandsubdwordmacro.o(MyData8) for RAM_0
 
 
 ==============================================================================
@@ -34,7 +36,9 @@ Image Symbol Table
     src\AssemblerPractice\5IndirectAddressing.s 0x00000000   Number         0  5indirectaddressing.o ABSOLUTE
     src\AssemblerPractice\6CopyRom-RamWithLoop.s 0x00000000   Number         0  6copyrom-ramwithloop.o ABSOLUTE
     src\AssemblerPractice\7OperationsAddAndSub.s 0x00000000   Number         0  7operationsaddandsub.o ABSOLUTE
+    src\AssemblerPractice\8AddAndSubDWordMACRO.s 0x00000000   Number         0  8addandsubdwordmacro.o ABSOLUTE
     src\AssemblerPractice\Main.s             0x00000000   Number         0  main.o ABSOLUTE
+    src\AssemblerPractice\MyMacro1.s         0x00000000   Number         0  mymacro1.o ABSOLUTE
     src\StartUpAndInterrupts\NMI.s           0x00000000   Number         0  nmi.o ABSOLUTE
     src\StartUpAndInterrupts\StartUp1.s      0x00000000   Number         0  startup1.o ABSOLUTE
     RESET                                    0x00000000   Section       12  startup1.o(RESET)
@@ -59,6 +63,8 @@ Image Symbol Table
     MyCode                                   0x000014d4   Section      184  6copyrom-ramwithloop.o(MyCode)
     $v0                                      0x0000158c   Number         0  7operationsaddandsub.o(MyCode7)
     MyCode7                                  0x0000158c   Section       60  7operationsaddandsub.o(MyCode7)
+    $v0                                      0x000015c8   Number         0  8addandsubdwordmacro.o(MyCode8)
+    MyCode8                                  0x000015c8   Section      180  8addandsubdwordmacro.o(MyCode8)
     A_RAM                                    0x20000000   Data          16  6copyrom-ramwithloop.o(MyData)
     MyData                                   0x20000000   Section      126  6copyrom-ramwithloop.o(MyData)
     Result_of_addition                       0x20000010   Data           0  6copyrom-ramwithloop.o(MyData)
@@ -66,8 +72,11 @@ Image Symbol Table
     MyData7                                  0x20000080   Section       32  7operationsaddandsub.o(MyData7)
     Sum_W                                    0x20000090   Data           8  7operationsaddandsub.o(MyData7)
     Sub_W                                    0x20000098   Data           8  7operationsaddandsub.o(MyData7)
-    STACK                                    0x200000a0   Section     1024  startup1.o(STACK)
-    __initial_sp                             0x200004a0   Data           0  startup1.o(STACK)
+    RAM_0                                    0x200000a0   Data          16  8addandsubdwordmacro.o(MyData8)
+    MyData8                                  0x200000a0   Section       28  8addandsubdwordmacro.o(MyData8)
+    Result                                   0x200000b0   Data          12  8addandsubdwordmacro.o(MyData8)
+    STACK                                    0x200000c0   Section     1024  startup1.o(STACK)
+    __initial_sp                             0x200004c0   Data           0  startup1.o(STACK)
 
     Global Symbols
 
@@ -87,6 +96,7 @@ Image Symbol Table
     IndirectAddressing                       0x0000147d   Thumb Code     0  5indirectaddressing.o(MyCode)
     CopyRomRamWithLoop                       0x000014d5   Thumb Code     0  6copyrom-ramwithloop.o(MyCode)
     OperationsAddAndSub                      0x0000158d   Thumb Code     0  7operationsaddandsub.o(MyCode7)
+    AddAndSubDWord                           0x000015c9   Thumb Code     0  8addandsubdwordmacro.o(MyCode8)
 
 
 
@@ -96,9 +106,9 @@ Memory Map of the image
 
   Image Entry point : 0x0000000d
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00001668, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00001738, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000015c8, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x0000167c, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -117,22 +127,24 @@ Memory Map of the image
     0x0000147c   0x0000147c   0x00000058   Code   RO           28  * MyCode              5indirectaddressing.o
     0x000014d4   0x000014d4   0x000000b8   Code   RO           31  * MyCode              6copyrom-ramwithloop.o
     0x0000158c   0x0000158c   0x0000003c   Code   RO           35  * MyCode7             7operationsaddandsub.o
+    0x000015c8   0x000015c8   0x000000b4   Code   RO           39  * MyCode8             8addandsubdwordmacro.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x000015c8, Size: 0x000000a0, Max: 0xffffffff, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x20000000   0x000015c8   0x0000007e   Data   RW           32    MyData              6copyrom-ramwithloop.o
-    0x2000007e   0x00001646   0x00000002   PAD
-    0x20000080   0x00001648   0x00000020   Data   RW           36    MyData7             7operationsaddandsub.o
-
-
-    Execution Region ER_ZI (Exec base: 0x200000a0, Load base: 0x00001668, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x0000167c, Size: 0x000000bc, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x200000a0        -       0x00000400   Zero   RW            1    STACK               startup1.o
+    0x20000000   0x0000167c   0x0000007e   Data   RW           32    MyData              6copyrom-ramwithloop.o
+    0x2000007e   0x000016fa   0x00000002   PAD
+    0x20000080   0x000016fc   0x00000020   Data   RW           36    MyData7             7operationsaddandsub.o
+    0x200000a0   0x0000171c   0x0000001c   Data   RW           40    MyData8             8addandsubdwordmacro.o
+
+
+    Execution Region ER_ZI (Exec base: 0x200000c0, Load base: 0x00001738, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x200000c0        -       0x00000400   Zero   RW            1    STACK               startup1.o
 
 
 ==============================================================================
@@ -149,12 +161,13 @@ Image component sizes
         88         18          0          0          0        316   5indirectaddressing.o
        184         54          0        126          0        344   6copyrom-ramwithloop.o
         60         14          0         32          0        312   7operationsaddandsub.o
+       180         26          0         28          0        324   8addandsubdwordmacro.o
         12          6          0          0          0        264   main.o
          6          0          0          0          0        404   nmi.o
         12          6         12          0       1024        484   startup1.o
 
     ----------------------------------------------------------------------
-      5564       5142         12        160       1024       3352   Object Totals
+      5744       5168         12        188       1024       3676   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          8          2          0          2          0          0   (incl. Padding)
 
@@ -169,15 +182,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5564       5142         12        160       1024       3252   Grand Totals
-      5564       5142         12        160       1024       3252   ELF Image Totals
-      5564       5142         12        160          0          0   ROM Totals
+      5744       5168         12        188       1024       3576   Grand Totals
+      5744       5168         12        188       1024       3576   ELF Image Totals
+      5744       5168         12        188          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5576 (   5.45kB)
-    Total RW  Size (RW Data + ZI Data)              1184 (   1.16kB)
-    Total ROM Size (Code + RO Data + RW Data)       5736 (   5.60kB)
+    Total RO  Size (Code + RO Data)                 5756 (   5.62kB)
+    Total RW  Size (RW Data + ZI Data)              1212 (   1.18kB)
+    Total ROM Size (Code + RO Data + RW Data)       5944 (   5.80kB)
 
 ==============================================================================
 
