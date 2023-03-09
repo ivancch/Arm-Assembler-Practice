@@ -459,6 +459,11 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\MULT32US.s</FilePath>
             </File>
+            <File>
+              <FileName>10BitwiseOpAndShifts.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\10BitwiseOpAndShifts.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

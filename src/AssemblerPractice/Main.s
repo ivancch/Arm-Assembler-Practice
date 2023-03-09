@@ -60,8 +60,17 @@ Main
 	; умножение и деление в том числе
 	; в 64-х битном формате
 		IMPORT ArithmeticOpWithLDM_STM
-		LDR r0, =ArithmeticOpWithLDM_STM
+;		LDR r0, =ArithmeticOpWithLDM_STM
+;		BLX r0
+		
+	; Побитовые операции в том числе
+	; с применением логических сдвигов
+	; Реализация логического контроллера по таблице 
+	; истинности
+		IMPORT BitwiseOpAndShifts
+		LDR r0, =BitwiseOpAndShifts
 		BLX r0
+		
 	
 Stop	
  		B Stop

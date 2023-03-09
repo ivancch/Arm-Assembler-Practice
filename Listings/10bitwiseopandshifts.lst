@@ -1,0 +1,269 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode10, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           BitwiseOpAndShifts
+    7 00000000         BitwiseOpAndShifts
+    8 00000000         ; Побитовые операции
+    9 00000000         ;    B Variation_1
+   10 00000000         ; Логические сдвиги
+   11 00000000         ;    B Variation_2
+   12 00000000         ; Реализация логического контроллера по таблице 
+   13 00000000         ; истинности системы логических функций
+   14 00000000 E025            B                Variation_3
+   15 00000002         
+   16 00000002         Back
+   17 00000002 4770            BX               lr
+   18 00000004         
+   19 00000004         Variation_1
+   20 00000004         ; Демонстрация технологии маскирования бит
+   21 00000004         ; и битовых полей
+   22 00000004         ; Загрузить в регистр r0 начальные данные
+   23 00000004 4819            LDR              r0, =0xFFAABB55
+   24 00000006         ; Загрузить в регистр r1 маску 
+   25 00000006 F06F 010F       MOV              r1, #0xFFFFFFF0
+   26 0000000A         ; Очистить младший нибл регистра r0
+   27 0000000A EA00 0001       AND              r0, r1
+   28 0000000E         ; Очистить старший нибл регистра r0
+   29 0000000E EA00 1031       AND              r0, r1, ROR #4
+   30 00000012         ; Установить в "1" все разряды младшего нибла r0
+   31 00000012 F040 000F       ORR              r0, #2_00001111
+   32 00000016         ; Установить в "1" все разряды старшего байта r0
+   33 00000016 F06F 4170       LDR              r1, =0x0FFFFFFF
+   34 0000001A EA60 0001       ORN              r0, r1
+   35 0000001E         ; Проинвертировать все биты регистра r0
+   36 0000001E EA6F 0000       MVN              r0, r0
+   37 00000022         ; Установить 3-й бит регистра r0
+   38 00000022 F040 0008       ORR              r0, #0x00000008
+   39 00000026         ; Очистить 3-й бит регистра r0
+   40 00000026 F020 0008       AND              r0, #0xFFFFFFF7
+   41 0000002A         ; Установить 3-й бит регистра r0 командой ORN
+   42 0000002A F040 0008       ORN              r0, #0xFFFFFFF7
+   43 0000002E         ; Очистить 7-й бит регистра r0 командой BIC
+   44 0000002E F020 0080       BIC              r0, #2_10000000
+   45 00000032         
+   46 00000032         ; Останов
+   47 00000032 E7E6            B                Back
+   48 00000034         ******************************************
+   49 00000034         
+   50 00000034         Variation_2
+   51 00000034         ; Использование команд пересылки с попутным сдвигом
+   52 00000034         ; и эквивалентных им обычных команд сдвига
+   53 00000034         ; Загрузить в регистр r1 начальные данные
+   54 00000034 490D            LDR              r1,=0xFFAABB55
+   55 00000036         ; Переслать в регистр r0 c предварительным
+   56 00000036         ; логическим сдвигом на 8 разрдяов влево 
+   57 00000036 EA4F 2001       MOV              r0,r1, LSL #8
+   58 0000003A         ; Эквивалентная ей команда логического сдвига
+   59 0000003A EA4F 2001       LSL              r0,r1,#8
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   60 0000003E         ; Переслать в регистр r0 содержимое r1 с обменом
+   61 0000003E         ; местами старшего и младшего полуслов 
+   62 0000003E EA4F 4031       MOV              r0,r1,ROR #16
+   63 00000042         ; Эквивалентная ей команда логического сдвига
+   64 00000042 EA4F 4031       ROR              r0,r1,#16
+   65 00000046         ; Переслать в регистр r0 содержимое r1 с обменом
+   66 00000046         ; данными в старшем и младшем байтах слова
+   67 00000046         ; (средние байты могут быть изменены)
+   68 00000046 EA4F 2031       MOV              r0,r1,ROR #8
+   69 0000004A         ; Эквивалентная команда циклического сдвига   
+   70 0000004A EA4F 2031       ROR              r0,r1,#8
+   71 0000004E         ******************************************
+   72 0000004E         
+   73 0000004E         Variation_3
+   74 0000004E         ; Реализация логического контроллера по таблице 
+   75 0000004E         ; истинности системы логических функций
+   76 0000004E         LOG_CONTR
+   77 0000004E         ; Проиницилизировать базовый регистр r0
+   78 0000004E         ; начальным адресом таблицы истинности
+   79 0000004E A004            ADR              r0, Tab_Ist
+   80 00000050         ; Проинициализировать базовый регистр r1
+   81 00000050         ; адресом порта ввода входных переменнх
+   82 00000050 4907            LDR              r1, =X
+   83 00000052         ; Проинициализировать базовый регистр r2
+   84 00000052         ; адресом порта вывода управляющих воздействий
+   85 00000052 4A08            LDR              r2, =Y
+   86 00000054         LOOP
+   87 00000054         ; Получить текущее состояние входных переменных
+   88 00000054         ; (вектор X)
+   89 00000054 780B            LDRB             r3, [r1]
+   90 00000056         ; Считать из таблицы истинности вектор выхода
+   91 00000056 5CC4            LDRB             r4, [r0,r3]
+   92 00000058         ; Выдать вектор выхода в порт вывода управляющих 
+   93 00000058         ; воздействий
+   94 00000058 7014            STRB             r4,[r2]
+   95 0000005A         ; Выполнить очередной скан расчета
+   96 0000005A E7FB            B                LOOP
+   97 0000005C         
+   98 0000005C         ; Останов
+   99 0000005C E7D1            B                Back
+  100 0000005E         
+  101 0000005E 00 00           ALIGN
+  102 00000060         ; Резервироание места в кодовой памяти и инициализация
+  103 00000060         ; таблицы истинности системы логических функций
+  104 00000060         Tab_Ist
+  105 00000060         ; Всего в таблице должно быть 256 байт данных
+  106 00000060         ; (показано только начало таблицы - 10 байт)    
+  107 00000060 C2              DCB              2_11000010
+  108 00000061 0F              DCB              2_00001111
+  109 00000062 B8              DCB              2_10111000
+  110 00000063 C0              DCB              2_11000000
+  111 00000064 D9              DCB              2_11011001
+  112 00000065 AA              DCB              2_10101010
+  113 00000066 DB              DCB              2_11011011
+  114 00000067 DB              DCB              2_11011011
+  115 00000068 DB              DCB              2_11011011
+  116 00000069 78              DCB              2_01111000
+  117 0000006A         ;    ... 
+  118 0000006A 00 00           ALIGN
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  119 0000006C         ; Объявление секции данных, в которой размещается
+  120 0000006C         ; порт ввода вектора X и вывода вектора Y 
+  121 0000006C FFAABB55 
+              00000000 
+              00000000         AREA             MyData, Data, ReadWrite
+  122 00000000         
+  123 00000000 00      X       SPACE            1
+  124 00000001 00      Y       SPACE            1
+  125 00000002         
+  126 00000002         ; Конец ассемблерного текста
+  127 00000002                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\10bitwiseopandshifts.d -o.\ob
+jects\10bitwiseopandshifts.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
+ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\10bitwiseopandshifts.lst src\AssemblerPractice\10BitwiseOpAndS
+hifts.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Back 00000002
+
+Symbol: Back
+   Definitions
+      At line 16 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 47 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+      At line 99 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+
+BitwiseOpAndShifts 00000000
+
+Symbol: BitwiseOpAndShifts
+   Definitions
+      At line 7 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 6 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: BitwiseOpAndShifts used once
+LOG_CONTR 0000004E
+
+Symbol: LOG_CONTR
+   Definitions
+      At line 76 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      None
+Comment: LOG_CONTR unused
+LOOP 00000054
+
+Symbol: LOOP
+   Definitions
+      At line 86 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 96 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: LOOP used once
+MyCode10 00000000
+
+Symbol: MyCode10
+   Definitions
+      At line 2 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      None
+Comment: MyCode10 unused
+Tab_Ist 00000060
+
+Symbol: Tab_Ist
+   Definitions
+      At line 104 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 79 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: Tab_Ist used once
+Variation_1 00000004
+
+Symbol: Variation_1
+   Definitions
+      At line 19 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      None
+Comment: Variation_1 unused
+Variation_2 00000034
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: Variation_2
+   Definitions
+      At line 50 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      None
+Comment: Variation_2 unused
+Variation_3 0000004E
+
+Symbol: Variation_3
+   Definitions
+      At line 73 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 14 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: Variation_3 used once
+9 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyData 00000000
+
+Symbol: MyData
+   Definitions
+      At line 121 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      None
+Comment: MyData unused
+X 00000000
+
+Symbol: X
+   Definitions
+      At line 123 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 82 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: X used once
+Y 00000001
+
+Symbol: Y
+   Definitions
+      At line 124 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+   Uses
+      At line 85 in file src\AssemblerPractice\10BitwiseOpAndShifts.s
+Comment: Y used once
+3 symbols
+347 symbols in table
