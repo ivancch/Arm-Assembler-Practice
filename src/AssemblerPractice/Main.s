@@ -53,9 +53,15 @@ Main
 	; Cложение и вычитание двойного слова
 	; в том числе с использованием макрокоманды
 		IMPORT AddAndSubDWord
-		LDR r0, =AddAndSubDWord
+;		LDR r0, =AddAndSubDWord
+;		BLX r0
+
+	; Множественная загрузка и выгрузка,
+	; умножение и деление в том числе
+	; в 64-х битном формате
+		IMPORT ArithmeticOpWithLDM_STM
+		LDR r0, =ArithmeticOpWithLDM_STM
 		BLX r0
-	
 	
 Stop	
  		B Stop

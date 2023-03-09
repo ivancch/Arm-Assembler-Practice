@@ -449,6 +449,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\MyMacro1.s</FilePath>
             </File>
+            <File>
+              <FileName>9ArithmeticOpWithLDM-STM.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\9ArithmeticOpWithLDM-STM.s</FilePath>
+            </File>
+            <File>
+              <FileName>MULT32US.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\MULT32US.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
