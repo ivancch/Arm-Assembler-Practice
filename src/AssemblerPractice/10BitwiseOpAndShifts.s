@@ -118,7 +118,7 @@ Tab_Ist
 				ALIGN
 ; Объявление секции данных, в которой размещается
 ; порт ввода вектора X и вывода вектора Y 
-				AREA MyData, Data, ReadWrite
+				AREA MyData, DATA, ReadWrite
 					
 X 				SPACE 1
 Y       		SPACE 1

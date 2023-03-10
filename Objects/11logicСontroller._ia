@@ -1,0 +1,7 @@
+--cpu Cortex-M4.fp.sp --li -g
+-IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include
+--pd "__UVISION_VERSION SETA 537"
+--pd "ARMCM4_FP SETA 1"
+--list .\listings\11logic—ontroller.lst
+--xref --width 132 -o .\objects\11logic—ontroller.o
+--depend .\objects\11logic—ontroller.d "src\AssemblerPractice\11Logic—ontroller.s"

@@ -464,6 +464,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\10BitwiseOpAndShifts.s</FilePath>
             </File>
+            <File>
+              <FileName>11LogicController.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\11LogicController.s</FilePath>
+            </File>
+            <File>
+              <FileName>MacroBit.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\MacroBit.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

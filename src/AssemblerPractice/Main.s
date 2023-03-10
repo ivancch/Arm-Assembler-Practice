@@ -68,10 +68,16 @@ Main
 	; Реализация логического контроллера по таблице 
 	; истинности
 		IMPORT BitwiseOpAndShifts
-		LDR r0, =BitwiseOpAndShifts
+;		LDR r0, =BitwiseOpAndShifts
+;		BLX r0
+		
+	; Реализация логического контроллера с использованием
+	; макробиблиотеки функций битового сопроцессора
+		IMPORT LogicController
+		LDR r0, =LogicController
 		BLX r0
 		
-	
+		
 Stop	
  		B Stop
 

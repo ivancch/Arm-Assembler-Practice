@@ -138,7 +138,7 @@ ARM Macro Assembler    Page 3
   120 0000006C         ; порт ввода вектора X и вывода вектора Y 
   121 0000006C FFAABB55 
               00000000 
-              00000000         AREA             MyData, Data, ReadWrite
+              00000000         AREA             MyData, DATA, ReadWrite
   122 00000000         
   123 00000000 00      X       SPACE            1
   124 00000001 00      Y       SPACE            1
