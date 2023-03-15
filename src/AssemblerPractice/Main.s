@@ -74,8 +74,15 @@ Main
 	; Реализация логического контроллера с использованием
 	; макробиблиотеки функций битового сопроцессора
 		IMPORT LogicController
-		LDR r0, =LogicController
-		BLX r0
+;		LDR r0, =LogicController
+;		BLX r0
+	
+	
+	; Реализация логического контроллера методом
+	; тестирования входных битовых переменных
+		IMPORT LogicContrTestBits
+		LDR r0, =LogicContrTestBits
+		BX r0
 		
 		
 Stop	

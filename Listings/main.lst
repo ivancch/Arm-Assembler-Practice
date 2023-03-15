@@ -86,16 +86,23 @@ ARM Macro Assembler    Page 2
    74 00000000         ; Реализация логического контроллера с использованием
    75 00000000         ; макробиблиотеки функций битового сопроцессора
    76 00000000                 IMPORT           LogicController
-   77 00000000 4801            LDR              r0, =LogicController
-   78 00000002 4780            BLX              r0
-   79 00000004         
-   80 00000004         
-   81 00000004         Stop
-   82 00000004 E7FE            B                Stop
-   83 00000006         
-   84 00000006 00 00           ALIGN
-   85 00000008         ; Конец ассемблерного текста
-   86 00000008                 END
+   77 00000000         ;  LDR r0, =LogicController
+   78 00000000         ;  BLX r0
+   79 00000000         
+   80 00000000         
+   81 00000000         ; Реализация логического контроллера методом
+   82 00000000         ; тестирования входных битовых переменных
+   83 00000000                 IMPORT           LogicContrTestBits
+   84 00000000 4801            LDR              r0, =LogicContrTestBits
+   85 00000002 4700            BX               r0
+   86 00000004         
+   87 00000004         
+   88 00000004         Stop
+   89 00000004 E7FE            B                Stop
+   90 00000006         
+   91 00000006 00 00           ALIGN
+   92 00000008         ; Конец ассемблерного текста
+   93 00000008                 END
               00000000 
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
@@ -126,9 +133,9 @@ Stop 00000004
 
 Symbol: Stop
    Definitions
-      At line 81 in file src\AssemblerPractice\Main.s
+      At line 88 in file src\AssemblerPractice\Main.s
    Uses
-      At line 82 in file src\AssemblerPractice\Main.s
+      At line 89 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -185,23 +192,31 @@ Symbol: IndirectAddressing
    Uses
       None
 Comment: IndirectAddressing unused
+LogicContrTestBits 00000000
+
+Symbol: LogicContrTestBits
+   Definitions
+      At line 83 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 84 in file src\AssemblerPractice\Main.s
+Comment: LogicContrTestBits used once
 LogicController 00000000
 
 Symbol: LogicController
-   Definitions
-      At line 76 in file src\AssemblerPractice\Main.s
-   Uses
-      At line 77 in file src\AssemblerPractice\Main.s
-Comment: LogicController used once
-OperationsAddAndSub 00000000
-
-Symbol: OperationsAddAndSub
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 External symbols
 
+   Definitions
+      At line 76 in file src\AssemblerPractice\Main.s
+   Uses
+      None
+Comment: LogicController unused
+OperationsAddAndSub 00000000
+
+Symbol: OperationsAddAndSub
    Definitions
       At line 49 in file src\AssemblerPractice\Main.s
    Uses
@@ -231,5 +246,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-11 symbols
-349 symbols in table
+12 symbols
+350 symbols in table

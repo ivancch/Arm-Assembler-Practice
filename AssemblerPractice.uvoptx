@@ -187,8 +187,8 @@
       <MemoryWindow2>
         <Mm>
           <WinNumber>2</WinNumber>
-          <SubType>256</SubType>
-          <ItemText>0x20000210</ItemText>
+          <SubType>1</SubType>
+          <ItemText>0x20000214</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
@@ -452,6 +452,30 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\AssemblerPractice\MacroBit.s</PathWithFileName>
       <FilenameWithoutPath>MacroBit.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>18</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\AssemblerPractice\12LogicContrTestBits.s</PathWithFileName>
+      <FilenameWithoutPath>12LogicContrTestBits.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>19</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\AssemblerPractice\MacroTestBit.s</PathWithFileName>
+      <FilenameWithoutPath>MacroTestBit.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

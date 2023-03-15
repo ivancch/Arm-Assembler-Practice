@@ -474,6 +474,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\MacroBit.s</FilePath>
             </File>
+            <File>
+              <FileName>12LogicContrTestBits.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\12LogicContrTestBits.s</FilePath>
+            </File>
+            <File>
+              <FileName>MacroTestBit.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\MacroTestBit.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

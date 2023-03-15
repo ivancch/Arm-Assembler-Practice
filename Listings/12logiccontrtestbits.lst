@@ -1,0 +1,202 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Подключить файл с макробиблитекой битового 
+    2 00000000         ; сопроцессора для вычисления  логических
+    3 00000000         ; функций методом тестирования бит
+    4 00000000                 INCLUDE          MacroTestBit.s
+    1 00000000         ; Макробиблиотека команд битового сопроцессора для
+    2 00000000         ; вычисления логических функций методом тестирования бит
+    3 00000000         ;*********************************************************
+    4 00000000         ; Тестирование бита в регистре ЦПУ по его номеру
+    5 00000000                 MACRO
+    6 00000000                 TST_Bit          $R,$N
+    7 00000000                 TST              $R,#(1<<$N)
+    8 00000000                 MEND
+    9 00000000         ;*********************************************************
+   10 00000000         ;*********************************************************
+   11 00000000         ; Установка бита в регистре ЦПУ по его номеру
+   12 00000000                 MACRO
+   13 00000000                 SET_Bit          $R,$N
+   14 00000000                 ORR              $R,#(1<<$N)
+   15 00000000                 MEND
+   16 00000000         ;********************************************************* 
+   17 00000000         ;*********************************************************
+   18 00000000         ; Сброс бита в регистре ЦПУ по его номеру
+   19 00000000                 MACRO
+   20 00000000                 CLR_Bit          $R,$N
+   21 00000000                 BIC              $R,#(1<<$N)
+   22 00000000                 MEND
+   23 00000000         ;********************************************************* 
+   24 00000000         ; Конец ассемблерного текста
+   25 00000000                 END
+    5 00000000         
+    6 00000000         ; Объявить кодовую секцию MyCode
+    7 00000000                 AREA             MyCode11, CODE, ReadOnly
+    8 00000000         ; Объявить точку входа в программу приложения 
+    9 00000000                 ENTRY
+   10 00000000         ; Объвить точку входа глобальной переменной
+   11 00000000                 EXPORT           LogicContrTestBits
+   12 00000000         LogicContrTestBits
+   13 00000000         LOG_CONTR
+   14 00000000         ; Реализация логического контроллера методом
+   15 00000000         ; тестирования входных битовых переменных
+   16 00000000         ; Загрузить вектор входа X из памяти
+   17 00000000 4D0B            LDR              r5, =X
+   18 00000002 6829            LDR              r1, [r5]
+   19 00000004         ; Вызвать подпрограмму расчета функции y0
+   20 00000004 F000 F804       BL               CALC_y0
+   21 00000008         ; Вызвать подпрограммы расчета других функций
+   22 00000008         ;    ...
+   23 00000008         ; Вывести управляющие воздействия в порт вывода
+   24 00000008 4D0A            LDR              r5, =Y
+   25 0000000A 602A            STR              r2, [r5]
+   26 0000000C         ; Повторить цикл логического контроллера
+   27 0000000C E7F8            B                LOG_CONTR
+   28 0000000E         
+   29 0000000E         ; Останов
+   30 0000000E         Stop
+   31 0000000E E7FE            B                Stop
+   32 00000010         
+   33 00000010         ; Подпрограмма расчета Функции y0
+   34 00000010         CALC_y0
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   35 00000010                 TST_Bit          r1, 0
+    7 00000010 F011 0F01       TST              r1,#(1<<0)
+   36 00000014 D108            BNE              S_y0
+   37 00000016                 TST_Bit          r1, 5
+    7 00000016 F011 0F20       TST              r1,#(1<<5)
+   38 0000001A D002            BEQ              C_y0
+   39 0000001C                 TST_Bit          r1, 1
+    7 0000001C F011 0F02       TST              r1,#(1<<1)
+   40 00000020 D002            BEQ              S_y0
+   41 00000022         C_y0
+   42 00000022                 CLR_Bit          r2, 0
+   21 00000022 F022 0201       BIC              r2,#(1<<0)
+   43 00000026 4770            BX               lr
+   44 00000028         S_y0
+   45 00000028                 SET_Bit          r2, 0
+   14 00000028 F042 0201       ORR              r2,#(1<<0)
+   46 0000002C 4770            BX               lr
+   47 0000002E         
+   48 0000002E 00 00           ALIGN
+   49 00000030         ; Объявление секции данных в памят данных
+   50 00000030 00000000 
+              00000000         AREA             MyData12, DATA, ReadWrite
+   51 00000000         ; Резервирование 2-х слов под 
+   52 00000000         ; вектор входа X и вектор выхода Y
+   53 00000000 00 00 00 
+              00       X       SPACE            4
+   54 00000004 00 00 00 
+              00       Y       SPACE            4
+   55 00000008         
+   56 00000008         ; Конец ассемблерного текста
+   57 00000008                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\12logiccontrtestbits.d -o.\ob
+jects\12logiccontrtestbits.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
+ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\12logiccontrtestbits.lst src\AssemblerPractice\12LogicContrTes
+tBits.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CALC_y0 00000010
+
+Symbol: CALC_y0
+   Definitions
+      At line 34 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 20 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: CALC_y0 used once
+C_y0 00000022
+
+Symbol: C_y0
+   Definitions
+      At line 41 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 38 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: C_y0 used once
+LOG_CONTR 00000000
+
+Symbol: LOG_CONTR
+   Definitions
+      At line 13 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 27 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: LOG_CONTR used once
+LogicContrTestBits 00000000
+
+Symbol: LogicContrTestBits
+   Definitions
+      At line 12 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 11 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: LogicContrTestBits used once
+MyCode11 00000000
+
+Symbol: MyCode11
+   Definitions
+      At line 7 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      None
+Comment: MyCode11 unused
+S_y0 00000028
+
+Symbol: S_y0
+   Definitions
+      At line 44 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 36 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 40 in file src\AssemblerPractice\12LogicContrTestBits.s
+
+Stop 0000000E
+
+Symbol: Stop
+   Definitions
+      At line 30 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 31 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: Stop used once
+7 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyData12 00000000
+
+Symbol: MyData12
+   Definitions
+      At line 50 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      None
+Comment: MyData12 unused
+X 00000000
+
+Symbol: X
+   Definitions
+      At line 53 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 17 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: X used once
+Y 00000004
+
+Symbol: Y
+   Definitions
+      At line 54 in file src\AssemblerPractice\12LogicContrTestBits.s
+   Uses
+      At line 24 in file src\AssemblerPractice\12LogicContrTestBits.s
+Comment: Y used once
+3 symbols
+345 symbols in table
