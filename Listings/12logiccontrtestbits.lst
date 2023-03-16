@@ -45,61 +45,60 @@ ARM Macro Assembler    Page 1
    14 00000000         ; Реализация логического контроллера методом
    15 00000000         ; тестирования входных битовых переменных
    16 00000000         ; Загрузить вектор входа X из памяти
-   17 00000000 4D0B            LDR              r5, =X
+   17 00000000 4D0A            LDR              r5, =X
    18 00000002 6829            LDR              r1, [r5]
    19 00000004         ; Вызвать подпрограмму расчета функции y0
-   20 00000004 F000 F804       BL               CALC_y0
+   20 00000004 F000 F803       BL               CALC_y0
    21 00000008         ; Вызвать подпрограммы расчета других функций
    22 00000008         ;    ...
    23 00000008         ; Вывести управляющие воздействия в порт вывода
-   24 00000008 4D0A            LDR              r5, =Y
+   24 00000008 4D09            LDR              r5, =Y
    25 0000000A 602A            STR              r2, [r5]
-   26 0000000C         ; Повторить цикл логического контроллера
-   27 0000000C E7F8            B                LOG_CONTR
-   28 0000000E         
-   29 0000000E         ; Останов
-   30 0000000E         Stop
-   31 0000000E E7FE            B                Stop
-   32 00000010         
-   33 00000010         ; Подпрограмма расчета Функции y0
-   34 00000010         CALC_y0
+   26 0000000C         ; Повторить цикл логического контроллера0    B LOG_CONTR
+   27 0000000C         
+   28 0000000C         ; Останов
+   29 0000000C         Stop
+   30 0000000C E7FE            B                Stop
+   31 0000000E         
+   32 0000000E         ; Подпрограмма расчета Функции y0
+   33 0000000E         CALC_y0
+   34 0000000E                 TST_Bit          r1, 0
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   35 00000010                 TST_Bit          r1, 0
-    7 00000010 F011 0F01       TST              r1,#(1<<0)
-   36 00000014 D108            BNE              S_y0
-   37 00000016                 TST_Bit          r1, 5
-    7 00000016 F011 0F20       TST              r1,#(1<<5)
-   38 0000001A D002            BEQ              C_y0
-   39 0000001C                 TST_Bit          r1, 1
-    7 0000001C F011 0F02       TST              r1,#(1<<1)
-   40 00000020 D002            BEQ              S_y0
-   41 00000022         C_y0
-   42 00000022                 CLR_Bit          r2, 0
-   21 00000022 F022 0201       BIC              r2,#(1<<0)
-   43 00000026 4770            BX               lr
-   44 00000028         S_y0
-   45 00000028                 SET_Bit          r2, 0
-   14 00000028 F042 0201       ORR              r2,#(1<<0)
-   46 0000002C 4770            BX               lr
-   47 0000002E         
-   48 0000002E 00 00           ALIGN
-   49 00000030         ; Объявление секции данных в памят данных
-   50 00000030 00000000 
+    7 0000000E F011 0F01       TST              r1,#(1<<0)
+   35 00000012 D108            BNE              S_y0
+   36 00000014                 TST_Bit          r1, 5
+    7 00000014 F011 0F20       TST              r1,#(1<<5)
+   37 00000018 D002            BEQ              C_y0
+   38 0000001A                 TST_Bit          r1, 1
+    7 0000001A F011 0F02       TST              r1,#(1<<1)
+   39 0000001E D002            BEQ              S_y0
+   40 00000020         C_y0
+   41 00000020                 CLR_Bit          r2, 0
+   21 00000020 F022 0201       BIC              r2,#(1<<0)
+   42 00000024 4770            BX               lr
+   43 00000026         S_y0
+   44 00000026                 SET_Bit          r2, 0
+   14 00000026 F042 0201       ORR              r2,#(1<<0)
+   45 0000002A 4770            BX               lr
+   46 0000002C         
+   47 0000002C                 ALIGN
+   48 0000002C         ; Объявление секции данных в памят данных
+   49 0000002C 00000000 
               00000000         AREA             MyData12, DATA, ReadWrite
-   51 00000000         ; Резервирование 2-х слов под 
-   52 00000000         ; вектор входа X и вектор выхода Y
-   53 00000000 00 00 00 
+   50 00000000         ; Резервирование 2-х слов под 
+   51 00000000         ; вектор входа X и вектор выхода Y
+   52 00000000 00 00 00 
               00       X       SPACE            4
-   54 00000004 00 00 00 
+   53 00000004 00 00 00 
               00       Y       SPACE            4
-   55 00000008         
-   56 00000008         ; Конец ассемблерного текста
-   57 00000008                 END
+   54 00000008         
+   55 00000008         ; Конец ассемблерного текста
+   56 00000008                 END
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\12logiccontrtestbits.d -o.\ob
 jects\12logiccontrtestbits.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISI
 ON_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\12logiccontrtestbits.lst src\AssemblerPractice\12LogicContrTes
@@ -110,21 +109,21 @@ tBits.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-CALC_y0 00000010
+CALC_y0 0000000E
 
 Symbol: CALC_y0
    Definitions
-      At line 34 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 33 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
       At line 20 in file src\AssemblerPractice\12LogicContrTestBits.s
 Comment: CALC_y0 used once
-C_y0 00000022
+C_y0 00000020
 
 Symbol: C_y0
    Definitions
-      At line 41 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 40 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
-      At line 38 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 37 in file src\AssemblerPractice\12LogicContrTestBits.s
 Comment: C_y0 used once
 LOG_CONTR 00000000
 
@@ -132,8 +131,8 @@ Symbol: LOG_CONTR
    Definitions
       At line 13 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
-      At line 27 in file src\AssemblerPractice\12LogicContrTestBits.s
-Comment: LOG_CONTR used once
+      None
+Comment: LOG_CONTR unused
 LogicContrTestBits 00000000
 
 Symbol: LogicContrTestBits
@@ -150,22 +149,22 @@ Symbol: MyCode11
    Uses
       None
 Comment: MyCode11 unused
-S_y0 00000028
+S_y0 00000026
 
 Symbol: S_y0
    Definitions
-      At line 44 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 43 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
-      At line 36 in file src\AssemblerPractice\12LogicContrTestBits.s
-      At line 40 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 35 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 39 in file src\AssemblerPractice\12LogicContrTestBits.s
 
-Stop 0000000E
+Stop 0000000C
 
 Symbol: Stop
    Definitions
-      At line 30 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 29 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
-      At line 31 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 30 in file src\AssemblerPractice\12LogicContrTestBits.s
 Comment: Stop used once
 7 symbols
 
@@ -178,7 +177,7 @@ MyData12 00000000
 
 Symbol: MyData12
    Definitions
-      At line 50 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 49 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
       None
 Comment: MyData12 unused
@@ -186,7 +185,7 @@ X 00000000
 
 Symbol: X
    Definitions
-      At line 53 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 52 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
       At line 17 in file src\AssemblerPractice\12LogicContrTestBits.s
 Comment: X used once
@@ -194,7 +193,7 @@ Y 00000004
 
 Symbol: Y
    Definitions
-      At line 54 in file src\AssemblerPractice\12LogicContrTestBits.s
+      At line 53 in file src\AssemblerPractice\12LogicContrTestBits.s
    Uses
       At line 24 in file src\AssemblerPractice\12LogicContrTestBits.s
 Comment: Y used once

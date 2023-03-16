@@ -1,0 +1,333 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Объявить кодовую секцию MyCode
+    2 00000000                 AREA             MyCode13, CODE, ReadOnly
+    3 00000000         ; Объявить точку входа в программу приложения 
+    4 00000000                 ENTRY
+    5 00000000         ; Объвить точку входа глобальной переменной
+    6 00000000                 EXPORT           DiscreteContrMachine
+    7 00000000         DiscreteContrMachine
+    8 00000000         ; Программная реализация дискретного управляющего 
+    9 00000000         ; автомата (главный привод продольно-строгального станка)
+   10 00000000         ; Инициализация 
+   11 00000000         ; Установить начальное состояние автомата N=0 
+   12 00000000         ; Вывести управляющее воздействие Y = 0
+   13 00000000 F04F 0100       MOV              r1,#0
+   14 00000004 4834            LDR              r0,=N
+   15 00000006 E9C0 1100       STRD             r1, r1,[r0] ; Сохранить сразу два слова N,Y
+   16 0000000A         
+   17 0000000A         ; Основная программа дискретного управляющего автомата 
+   18 0000000A         ; Вызывается с частотой дискретизации системы управления
+   19 0000000A         DISK_AVT
+   20 0000000A         ; Получить текущий вектор входных битовых переменных X 
+   21 0000000A         ; и сохранить в регистре r1
+   22 0000000A         ; Получить текущий номер состояния автомата и
+   23 0000000A         ; сохранить в регистре r2
+   24 0000000A 4834            LDR              r0,=X
+   25 0000000C E9D0 1200       LDRD             r1,r2,[r0]  ; Получить сразу два слова X,N
+   26 00000010         
+   27 00000010         ; Загрузить в регистр r0 адрес таблицы точек входа
+   28 00000010         ; в подпрограммы - интерпретаторы вершин графа
+   29 00000010 A02D            ADR              r0, TAB_ADDR
+   30 00000012         ; Считать из таблицы адрес интерпретатора, номер которого
+   31 00000012         ; уже загружен в регистр r2
+   32 00000012         ; Попутный авто-расчет смещения по таблице offset=(r2)*4
+   33 00000012 F850 3022       LDR              r3,[r0, r2, LSL #2]
+   34 00000016         ; Косвенный вызов подпрограммы по ее начальному адресу
+   35 00000016 4798            BLX              r3
+   36 00000018         ;    ...
+   37 00000018         ; Повторить цикл дискретного управляющего автомата
+   38 00000018 E7F7            B                DISK_AVT
+   39 0000001A         
+   40 0000001A         ; Подпрограмма интерпретатора вершины 0 графа
+   41 0000001A         INT_0
+   42 0000001A         
+   43 0000001A         ; Проверить все условия перехода в порядке приоритета
+   44 0000001A         ; Компоненты вектора X сохранены в регистре r1
+   45 0000001A         ; Условие 1: (x0+x2)∙(/x5) ∙(/x1) ∙(/x3)
+   46 0000001A EA4F 70C1       LSL              r0,r1,#(31-0) ; Загрузка x0 в битовый аккумулятор
+   47 0000001E EA40 7041       ORR              r0,r1,LSL #(31-2) ;(x0+x2)
+   48 00000022 EA20 6081       BIC              r0,r1,LSL #(31-5) ; ∙(/x5)
+   49 00000026 EA20 7081       BIC              r0,r1,LSL #(31-1) ; ∙(/x1)
+   50 0000002A EA30 7001       BICS             r0,r1,LSL #(31-3) ; ∙(/x3) и выставить флаги
+   51 0000002E         ; Если условие истинно, сменить номер состояния N=1
+   52 0000002E         ; и выдать управляющее воздействие Y=4
+   53 0000002E BF41 4829       LDRMI            r0,=N
+   54 00000032 2301            MOVMI            r3,#1
+   55 00000034 2404            MOVMI            r4,#4
+   56 00000036 E9C0 3400       STRDMI           r3,r4,[r0]  ; Сохранить сразу два слова N,Y
+   57 0000003A         ; Досрочный выход из подпрограммы INT_0    
+   58 0000003A BF48 4770       BXMI             lr          ; Остальные условия не проверять!
+   59 0000003E         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   60 0000003E         ; Условие 2: x1∙(/x5) ∙(/x2) ∙(/x4)
+   61 0000003E EA4F 7081       LSL              r0,r1,#(31-1) ; Загрузка x1 в битовый аккумулятор
+   62 00000042 EA20 6081       BIC              r0,r1,LSL #(31-5) ; ∙(/x5)
+   63 00000046 EA20 7041       BIC              r0,r1,LSL #(31-2) ; ∙(/x2)
+   64 0000004A EA30 60C1       BICS             r0,r1,LSL #(31-4) ; ∙(/x4). Выставить флаги
+   65 0000004E         ; Если условие истинно, сменить номер состояния N=2
+   66 0000004E         ; и выдать управляющее воздействие Y=2
+   67 0000004E BF42 4821       LDRMI            r0,=N
+   68 00000052 2302            MOVMI            r3,#2
+   69 00000054 E9C0 3300       STRDMI           r3, r3,[r0] ; Сохранить сразу два слова N,Y
+   70 00000058         
+   71 00000058         ; Больше условий перехода нет, завершить подпрограмму
+   72 00000058 4770            BX               lr
+   73 0000005A         
+   74 0000005A         ; Подпрограмма интерпретатора вершины 1 графа
+   75 0000005A         INT_1
+   76 0000005A         
+   77 0000005A         ; Проверить все условия перехода в порядке приоритета
+   78 0000005A         ; Все компоненты вектора входа сохранены в регистре r1
+   79 0000005A         ; Условие перехода 1: x3+x1∙x2
+   80 0000005A EA4F 7081       LSL              r0,r1,#(31-1) ; Загрузка x1 в битовый аккумулятор
+   81 0000005E EA00 7041       AND              r0,r1,LSL #(31-2) ; x1∙x2
+   82 00000062 EA50 7001       ORRS             r0,r1,LSL #(31-3) ; x1∙x2 + x3 . Выставить флаги 
+   83 00000066         ; Если условие истинно, сменить номер состояния N=3
+   84 00000066         ; и выдать управляющее воздействие Y=1
+   85 00000066 BF41 481B       LDRMI            r0,=N
+   86 0000006A 2303            MOVMI            r3,#3
+   87 0000006C 2401            MOVMI            r4,#1
+   88 0000006E E9C0 3400       STRDMI           r3, r4,[r0] ; Сохранить сразу два слова N,Y
+   89 00000072         ; Досрочный выход из подпрограммы INT_1    
+   90 00000072 BF48 4770       BXMI             lr          ; Остальные условия не проверять!
+   91 00000076         
+   92 00000076         ; Условие перехода 2: x1+x5   
+   93 00000076 EA4F 7081       LSL              r0,r1,#(31-1) ; Загрузка x1 в битовый аккумулятор
+   94 0000007A EA50 6081       ORRS             r0,r1,LSL #(31-5) ; x1 + x5 . Выставить флаги 
+   95 0000007E         ; Если условие истинно, сменить номер состояния N=0
+   96 0000007E         ; и выдать управляющее воздействие Y=0
+   97 0000007E BF42 2100       MOVMI            r1,#0
+   98 00000082 4815            LDRMI            r0,=N
+   99 00000084 E9C0 1100       STRDMI           r1, r1,[r0] ; Сохранить два слова N,Y
+  100 00000088         
+  101 00000088         ; Больше условий перехода нет, завершить подпрограмму
+  102 00000088 4770            BX               lr
+  103 0000008A         
+  104 0000008A         ; Подпрограмма интерпретатора вершины 2 графа
+  105 0000008A         INT_2
+  106 0000008A         
+  107 0000008A         ; Проверить все условия перехода в порядке приоритета
+  108 0000008A         ; Условие перехода 1: x4+x1∙x2
+  109 0000008A EA4F 7081       LSL              r0,r1,#(31-1) ; Загрузка x1 в битовый аккумулятор
+  110 0000008E EA00 7041       AND              r0,r1,LSL #(31-2) ; x1∙x2
+  111 00000092 EA50 60C1       ORRS             r0,r1,LSL #(31-4) ; x1∙x2 + x4 . Выставить флаги 
+  112 00000096         ; Если условие истинно, сменить номер состояния N=3
+  113 00000096         ; и выдать управляющее воздействие Y=1
+  114 00000096 BF41 480F       LDRMI            r0,=N
+  115 0000009A 2303            MOVMI            r3,#3
+  116 0000009C 2401            MOVMI            r4,#1
+  117 0000009E E9C0 3400       STRDMI           r3, r4,[r0] ; Сохранить сразу два слова N,Y
+  118 000000A2         ; Досрочный выход из подпрограммы INT_2    
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  119 000000A2 BF48 4770       BXMI             lr          ; Остальные условия не проверять!
+  120 000000A6         
+  121 000000A6         ; Условие перехода 2: x2+x5
+  122 000000A6 EA4F 7041       LSL              r0,r1,#(31-2) ; Загрузка x2 в битовый аккумулятор
+  123 000000AA EA50 6081       ORRS             r0,r1,LSL #(31-5) ; x1 + x5 . Выставить флаги 
+  124 000000AE         ; Если условие истинно, сменить номер состояния N=0
+  125 000000AE         ; и выдать управляющее воздействие Y=0
+  126 000000AE BF42 2100       MOVMI            r1,#0
+  127 000000B2 4809            LDRMI            r0,=N
+  128 000000B4 E9C0 1100       STRDMI           r1, r1,[r0] ; Сохранить сразу два слова N,Y
+  129 000000B8         
+  130 000000B8         ; Больше условий перехода нет, завершить подпрограмму
+  131 000000B8 4770            BX               lr
+  132 000000BA         
+  133 000000BA         ; Подпрограмма интерпретатора веришны 3 графа
+  134 000000BA         INT_3
+  135 000000BA         
+  136 000000BA         ; Проверить единственное условие перехода x5
+  137 000000BA         ; Загрузка x5 в битовый аккумулятор, установка флагов
+  138 000000BA 0688            LSLS             r0,r1,#(31-5)
+  139 000000BC         ; Если условие истинно, сменить номер состояния N=0
+  140 000000BC         ; и выдать управляющее воздействие Y=0
+  141 000000BC BF42 2100       MOVMI            r1,#0
+  142 000000C0 4805            LDRMI            r0,=N
+  143 000000C2 E9C0 1100       STRDMI           r1, r1,[r0] ; Сохранить сразу два слова N,Y
+  144 000000C6         
+  145 000000C6         ; Больше условий перехода нет, завершить подпрограмму
+  146 000000C6 4770            BX               lr
+  147 000000C8         
+  148 000000C8         ; Выравнивание кодовой памяти по границе полного слова
+  149 000000C8         ; для размещения начальных адресов подпрограмм
+  150 000000C8                 ALIGN
+  151 000000C8         ; Таблица начальных адресов интерпретаторов вершин графа
+  152 000000C8         TAB_ADDR
+  153 000000C8 00000000        DCD              INT_0
+  154 000000CC 00000000        DCD              INT_1
+  155 000000D0 00000000        DCD              INT_2
+  156 000000D4 00000000        DCD              INT_3
+  157 000000D8         
+  158 000000D8         ; Выравнивние адресов переменных в памяти данных
+  159 000000D8                 ALIGN
+  160 000000D8         ; Объявление секции данных в ОЗУ
+  161 000000D8 00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000         AREA             MyData13, DATA, ReadWrite
+  162 00000000         ; Резервирование слов под 
+  163 00000000         ; вектор входа X, вектор выхода Y
+  164 00000000         ; и номер текущего состояния автомата N
+  165 00000000 00 00 00 
+              00       X       SPACE            4
+  166 00000004 00 00 00 
+              00       N       SPACE            4
+  167 00000008 00 00 00 
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+              00       Y       SPACE            4
+  168 0000000C         
+  169 0000000C         ; Конец ассемблерного текста
+  170 0000000C                 END
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\13discretecontrmachine.d -o.\
+objects\13discretecontrmachine.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__U
+VISION_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\13discretecontrmachine.lst src\AssemblerPractice\13Discret
+eContrMachine.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DISK_AVT 0000000A
+
+Symbol: DISK_AVT
+   Definitions
+      At line 19 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 38 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: DISK_AVT used once
+DiscreteContrMachine 00000000
+
+Symbol: DiscreteContrMachine
+   Definitions
+      At line 7 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 6 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: DiscreteContrMachine used once
+INT_0 0000001A
+
+Symbol: INT_0
+   Definitions
+      At line 41 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 153 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: INT_0 used once
+INT_1 0000005A
+
+Symbol: INT_1
+   Definitions
+      At line 75 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 154 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: INT_1 used once
+INT_2 0000008A
+
+Symbol: INT_2
+   Definitions
+      At line 105 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 155 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: INT_2 used once
+INT_3 000000BA
+
+Symbol: INT_3
+   Definitions
+      At line 134 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 156 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: INT_3 used once
+MyCode13 00000000
+
+Symbol: MyCode13
+   Definitions
+      At line 2 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      None
+Comment: MyCode13 unused
+TAB_ADDR 000000C8
+
+Symbol: TAB_ADDR
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 152 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 29 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: TAB_ADDR used once
+8 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyData13 00000000
+
+Symbol: MyData13
+   Definitions
+      At line 161 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      None
+Comment: MyData13 unused
+N 00000004
+
+Symbol: N
+   Definitions
+      At line 166 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 14 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 53 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 67 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 85 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 98 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 114 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 127 in file src\AssemblerPractice\13DiscreteContrMachine.s
+      At line 142 in file src\AssemblerPractice\13DiscreteContrMachine.s
+
+X 00000000
+
+Symbol: X
+   Definitions
+      At line 165 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      At line 24 in file src\AssemblerPractice\13DiscreteContrMachine.s
+Comment: X used once
+Y 00000008
+
+Symbol: Y
+   Definitions
+      At line 167 in file src\AssemblerPractice\13DiscreteContrMachine.s
+   Uses
+      None
+Comment: Y unused
+4 symbols
+347 symbols in table

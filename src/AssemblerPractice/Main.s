@@ -81,9 +81,14 @@ Main
 	; Реализация логического контроллера методом
 	; тестирования входных битовых переменных
 		IMPORT LogicContrTestBits
-		LDR r0, =LogicContrTestBits
+;		LDR r0, =LogicContrTestBits
+;		BX r0
+
+	; Программная реализация дискретного управляющего 
+	; автомата (главный привод продольно-строгального станка)
+		IMPORT DiscreteContrMachine
+		LDR r0, =DiscreteContrMachine
 		BX r0
-		
 		
 Stop	
  		B Stop

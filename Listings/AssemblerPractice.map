@@ -14,12 +14,13 @@ Section Cross References
     main.o(MyCode) refers (Special) to 6copyrom-ramwithloop.o(MyCode) for CopyRomRamWithLoop
     main.o(MyCode) refers (Special) to 3forcedreservationltorg.o(MyCode) for ForcedReservationLTORG
     main.o(MyCode) refers (Special) to 5indirectaddressing.o(MyCode) for IndirectAddressing
+    main.o(MyCode) refers (Special) to 12logiccontrtestbits.o(MyCode11) for LogicContrTestBits
     main.o(MyCode) refers (Special) to 11logiccontroller.o(MyCode11) for LogicController
     main.o(MyCode) refers (Special) to 7operationsaddandsub.o(MyCode7) for OperationsAddAndSub
     main.o(MyCode) refers (Special) to 4reservationdirective.o(MyCode) for ReservationDirective
     main.o(MyCode) refers (Special) to 1simpleoperations.o(MyCode) for SimpleOperations
     main.o(MyCode) refers (Special) to 2_32bitconst.o(MyCode) for _32bitConst
-    main.o(MyCode) refers to 12logiccontrtestbits.o(MyCode11) for LogicContrTestBits
+    main.o(MyCode) refers to 13discretecontrmachine.o(MyCode13) for DiscreteContrMachine
     6copyrom-ramwithloop.o(MyCode) refers to 6copyrom-ramwithloop.o(MyData) for A_RAM
     7operationsaddandsub.o(MyCode7) refers to 7operationsaddandsub.o(MyData7) for Array_W
     8addandsubdwordmacro.o(MyCode8) refers to 8addandsubdwordmacro.o(MyData8) for RAM_0
@@ -28,6 +29,7 @@ Section Cross References
     10bitwiseopandshifts.o(MyCode10) refers to 10bitwiseopandshifts.o(MyData) for X
     11logiccontroller.o(MyCode11) refers to 11logiccontroller.o(MyData11) for X
     12logiccontrtestbits.o(MyCode11) refers to 12logiccontrtestbits.o(MyData12) for X
+    13discretecontrmachine.o(MyCode13) refers to 13discretecontrmachine.o(MyData13) for N
 
 
 ==============================================================================
@@ -41,6 +43,7 @@ Image Symbol Table
     src\AssemblerPractice\10BitwiseOpAndShifts.s 0x00000000   Number         0  10bitwiseopandshifts.o ABSOLUTE
     src\AssemblerPractice\11LogicController.s 0x00000000   Number         0  11logiccontroller.o ABSOLUTE
     src\AssemblerPractice\12LogicContrTestBits.s 0x00000000   Number         0  12logiccontrtestbits.o ABSOLUTE
+    src\AssemblerPractice\13DiscreteContrMachine.s 0x00000000   Number         0  13discretecontrmachine.o ABSOLUTE
     src\AssemblerPractice\1SimpleOperations.s 0x00000000   Number         0  1simpleoperations.o ABSOLUTE
     src\AssemblerPractice\2_32bitConst.s     0x00000000   Number         0  2_32bitconst.o ABSOLUTE
     src\AssemblerPractice\3ForcedReservationLTORG.s 0x00000000   Number         0  3forcedreservationltorg.o ABSOLUTE
@@ -82,20 +85,26 @@ Image Symbol Table
     $v0                                      0x00001604   Number         0  11logiccontroller.o(MyCode11)
     MyCode11                                 0x00001604   Section      112  11logiccontroller.o(MyCode11)
     $v0                                      0x00001674   Number         0  12logiccontrtestbits.o(MyCode11)
-    MyCode11                                 0x00001674   Section       56  12logiccontrtestbits.o(MyCode11)
-    $v0                                      0x000016ac   Number         0  7operationsaddandsub.o(MyCode7)
-    MyCode7                                  0x000016ac   Section       60  7operationsaddandsub.o(MyCode7)
-    $v0                                      0x000016e8   Number         0  8addandsubdwordmacro.o(MyCode8)
-    MyCode8                                  0x000016e8   Section      180  8addandsubdwordmacro.o(MyCode8)
-    $v0                                      0x0000179c   Number         0  9arithmeticopwithldm-stm.o(MyCode9)
-    MyCode9                                  0x0000179c   Section      168  9arithmeticopwithldm-stm.o(MyCode9)
-    BackLinkV1                               0x000017cb   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
-    BackLinkV2                               0x000017dd   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
-    A_ROM9                                   0x000017e0   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
-    A_ROM9_2                                 0x000017f4   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
-    A_ROM9_3                                 0x0000180c   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
-    $v0                                      0x00001844   Number         0  mult32us.o(MyCodeMULT)
-    MyCodeMULT                               0x00001844   Section       28  mult32us.o(MyCodeMULT)
+    MyCode11                                 0x00001674   Section       52  12logiccontrtestbits.o(MyCode11)
+    $v0                                      0x000016a8   Number         0  13discretecontrmachine.o(MyCode13)
+    MyCode13                                 0x000016a8   Section      252  13discretecontrmachine.o(MyCode13)
+    INT_0                                    0x000016c3   Thumb Code     0  13discretecontrmachine.o(MyCode13)
+    INT_1                                    0x00001703   Thumb Code     0  13discretecontrmachine.o(MyCode13)
+    INT_2                                    0x00001733   Thumb Code     0  13discretecontrmachine.o(MyCode13)
+    INT_3                                    0x00001763   Thumb Code     0  13discretecontrmachine.o(MyCode13)
+    $v0                                      0x000017a4   Number         0  7operationsaddandsub.o(MyCode7)
+    MyCode7                                  0x000017a4   Section       60  7operationsaddandsub.o(MyCode7)
+    $v0                                      0x000017e0   Number         0  8addandsubdwordmacro.o(MyCode8)
+    MyCode8                                  0x000017e0   Section      180  8addandsubdwordmacro.o(MyCode8)
+    $v0                                      0x00001894   Number         0  9arithmeticopwithldm-stm.o(MyCode9)
+    MyCode9                                  0x00001894   Section      168  9arithmeticopwithldm-stm.o(MyCode9)
+    BackLinkV1                               0x000018c3   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
+    BackLinkV2                               0x000018d5   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
+    A_ROM9                                   0x000018d8   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
+    A_ROM9_2                                 0x000018ec   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
+    A_ROM9_3                                 0x00001904   Data           0  9arithmeticopwithldm-stm.o(MyCode9)
+    $v0                                      0x0000193c   Number         0  mult32us.o(MyCodeMULT)
+    MyCodeMULT                               0x0000193c   Section       28  mult32us.o(MyCodeMULT)
     A_RAM                                    0x20000000   Data          16  6copyrom-ramwithloop.o(MyData)
     MyData                                   0x20000000   Section      126  6copyrom-ramwithloop.o(MyData)
     Result_of_addition                       0x20000010   Data           0  6copyrom-ramwithloop.o(MyData)
@@ -110,15 +119,18 @@ Image Symbol Table
     X                                        0x2000021c   Data           4  12logiccontrtestbits.o(MyData12)
     MyData12                                 0x2000021c   Section        8  12logiccontrtestbits.o(MyData12)
     Y                                        0x20000220   Data           4  12logiccontrtestbits.o(MyData12)
-    Array_W                                  0x20000224   Data          16  7operationsaddandsub.o(MyData7)
-    MyData7                                  0x20000224   Section       32  7operationsaddandsub.o(MyData7)
-    Sum_W                                    0x20000234   Data           8  7operationsaddandsub.o(MyData7)
-    Sub_W                                    0x2000023c   Data           8  7operationsaddandsub.o(MyData7)
-    RAM_0                                    0x20000244   Data          16  8addandsubdwordmacro.o(MyData8)
-    MyData8                                  0x20000244   Section       28  8addandsubdwordmacro.o(MyData8)
-    Result                                   0x20000254   Data          12  8addandsubdwordmacro.o(MyData8)
-    STACK                                    0x20000260   Section     1024  startup1.o(STACK)
-    __initial_sp                             0x20000660   Data           0  startup1.o(STACK)
+    X                                        0x20000224   Data           4  13discretecontrmachine.o(MyData13)
+    MyData13                                 0x20000224   Section       12  13discretecontrmachine.o(MyData13)
+    N                                        0x20000228   Data           4  13discretecontrmachine.o(MyData13)
+    Array_W                                  0x20000230   Data          16  7operationsaddandsub.o(MyData7)
+    MyData7                                  0x20000230   Section       32  7operationsaddandsub.o(MyData7)
+    Sum_W                                    0x20000240   Data           8  7operationsaddandsub.o(MyData7)
+    Sub_W                                    0x20000248   Data           8  7operationsaddandsub.o(MyData7)
+    RAM_0                                    0x20000250   Data          16  8addandsubdwordmacro.o(MyData8)
+    MyData8                                  0x20000250   Section       28  8addandsubdwordmacro.o(MyData8)
+    Result                                   0x20000260   Data          12  8addandsubdwordmacro.o(MyData8)
+    STACK                                    0x20000270   Section     1024  startup1.o(STACK)
+    __initial_sp                             0x20000670   Data           0  startup1.o(STACK)
 
     Global Symbols
 
@@ -140,11 +152,12 @@ Image Symbol Table
     BitwiseOpAndShifts                       0x0000158d   Thumb Code     0  10bitwiseopandshifts.o(MyCode10)
     LogicController                          0x00001605   Thumb Code     0  11logiccontroller.o(MyCode11)
     LogicContrTestBits                       0x00001675   Thumb Code     0  12logiccontrtestbits.o(MyCode11)
-    OperationsAddAndSub                      0x000016ad   Thumb Code     0  7operationsaddandsub.o(MyCode7)
-    AddAndSubDWord                           0x000016e9   Thumb Code     0  8addandsubdwordmacro.o(MyCode8)
-    ArithmeticOpWithLDM_STM                  0x0000179d   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
-    MUL_U32_U32                              0x00001845   Thumb Code     0  mult32us.o(MyCodeMULT)
-    MUL_S32_S32                              0x00001853   Thumb Code     0  mult32us.o(MyCodeMULT)
+    DiscreteContrMachine                     0x000016a9   Thumb Code     0  13discretecontrmachine.o(MyCode13)
+    OperationsAddAndSub                      0x000017a5   Thumb Code     0  7operationsaddandsub.o(MyCode7)
+    AddAndSubDWord                           0x000017e1   Thumb Code     0  8addandsubdwordmacro.o(MyCode8)
+    ArithmeticOpWithLDM_STM                  0x00001895   Thumb Code     0  9arithmeticopwithldm-stm.o(MyCode9)
+    MUL_U32_U32                              0x0000193d   Thumb Code     0  mult32us.o(MyCodeMULT)
+    MUL_S32_S32                              0x0000194b   Thumb Code     0  mult32us.o(MyCodeMULT)
 
 
 
@@ -154,9 +167,9 @@ Memory Map of the image
 
   Image Entry point : 0x0000000d
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00001ac0, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00001bc4, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00001860, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00001958, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -176,33 +189,35 @@ Memory Map of the image
     0x000014d4   0x000014d4   0x000000b8   Code   RO           31  * MyCode              6copyrom-ramwithloop.o
     0x0000158c   0x0000158c   0x00000078   Code   RO           50  * MyCode10            10bitwiseopandshifts.o
     0x00001604   0x00001604   0x00000070   Code   RO           54  * MyCode11            11logiccontroller.o
-    0x00001674   0x00001674   0x00000038   Code   RO           58  * MyCode11            12logiccontrtestbits.o
-    0x000016ac   0x000016ac   0x0000003c   Code   RO           35  * MyCode7             7operationsaddandsub.o
-    0x000016e8   0x000016e8   0x000000b4   Code   RO           39  * MyCode8             8addandsubdwordmacro.o
-    0x0000179c   0x0000179c   0x000000a8   Code   RO           43  * MyCode9             9arithmeticopwithldm-stm.o
-    0x00001844   0x00001844   0x0000001c   Code   RO           47    MyCodeMULT          mult32us.o
+    0x00001674   0x00001674   0x00000034   Code   RO           58  * MyCode11            12logiccontrtestbits.o
+    0x000016a8   0x000016a8   0x000000fc   Code   RO           62  * MyCode13            13discretecontrmachine.o
+    0x000017a4   0x000017a4   0x0000003c   Code   RO           35  * MyCode7             7operationsaddandsub.o
+    0x000017e0   0x000017e0   0x000000b4   Code   RO           39  * MyCode8             8addandsubdwordmacro.o
+    0x00001894   0x00001894   0x000000a8   Code   RO           43  * MyCode9             9arithmeticopwithldm-stm.o
+    0x0000193c   0x0000193c   0x0000001c   Code   RO           47    MyCodeMULT          mult32us.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00001860, Size: 0x00000260, Max: 0xffffffff, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x20000000   0x00001860   0x0000007e   Data   RW           32    MyData              6copyrom-ramwithloop.o
-    0x2000007e   0x000018de   0x00000002   PAD
-    0x20000080   0x000018e0   0x00000190   Data   RW           44    MyData              9arithmeticopwithldm-stm.o
-    0x20000210   0x00001a70   0x00000002   Data   RW           51    MyData              10bitwiseopandshifts.o
-    0x20000212   0x00001a72   0x00000002   PAD
-    0x20000214   0x00001a74   0x00000008   Data   RW           55    MyData11            11logiccontroller.o
-    0x2000021c   0x00001a7c   0x00000008   Data   RW           59    MyData12            12logiccontrtestbits.o
-    0x20000224   0x00001a84   0x00000020   Data   RW           36    MyData7             7operationsaddandsub.o
-    0x20000244   0x00001aa4   0x0000001c   Data   RW           40    MyData8             8addandsubdwordmacro.o
-
-
-    Execution Region ER_ZI (Exec base: 0x20000260, Load base: 0x00001ac0, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x00001958, Size: 0x0000026c, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000260        -       0x00000400   Zero   RW            1    STACK               startup1.o
+    0x20000000   0x00001958   0x0000007e   Data   RW           32    MyData              6copyrom-ramwithloop.o
+    0x2000007e   0x000019d6   0x00000002   PAD
+    0x20000080   0x000019d8   0x00000190   Data   RW           44    MyData              9arithmeticopwithldm-stm.o
+    0x20000210   0x00001b68   0x00000002   Data   RW           51    MyData              10bitwiseopandshifts.o
+    0x20000212   0x00001b6a   0x00000002   PAD
+    0x20000214   0x00001b6c   0x00000008   Data   RW           55    MyData11            11logiccontroller.o
+    0x2000021c   0x00001b74   0x00000008   Data   RW           59    MyData12            12logiccontrtestbits.o
+    0x20000224   0x00001b7c   0x0000000c   Data   RW           63    MyData13            13discretecontrmachine.o
+    0x20000230   0x00001b88   0x00000020   Data   RW           36    MyData7             7operationsaddandsub.o
+    0x20000250   0x00001ba8   0x0000001c   Data   RW           40    MyData8             8addandsubdwordmacro.o
+
+
+    Execution Region ER_ZI (Exec base: 0x20000270, Load base: 0x00001bc4, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000270        -       0x00000400   Zero   RW            1    STACK               startup1.o
 
 
 ==============================================================================
@@ -214,7 +229,8 @@ Image component sizes
 
        120         26          0          2          0        328   10bitwiseopandshifts.o
        112         10          0          8          0        312   11logiccontroller.o
-        56         10          0          8          0        312   12logiccontrtestbits.o
+        52          8          0          8          0        308   12logiccontrtestbits.o
+       252         52          0         12          0        364   13discretecontrmachine.o
         94          0          0          0          0        312   1simpleoperations.o
         36         10          0          0          0        284   2_32bitconst.o
       5034       5014          0          0          0        332   3forcedreservationltorg.o
@@ -230,7 +246,7 @@ Image component sizes
         12          6         12          0       1024        484   startup1.o
 
     ----------------------------------------------------------------------
-      6228       5316         12        608       1024       5244   Object Totals
+      6476       5366         12        620       1024       5604   Object Totals
          0          0          0          0          0          0   (incl. Generated)
          8          2          0          4          0          0   (incl. Padding)
 
@@ -245,15 +261,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      6228       5316         12        608       1024       5144   Grand Totals
-      6228       5316         12        608       1024       5144   ELF Image Totals
-      6228       5316         12        608          0          0   ROM Totals
+      6476       5366         12        620       1024       5504   Grand Totals
+      6476       5366         12        620       1024       5504   ELF Image Totals
+      6476       5366         12        620          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 6240 (   6.09kB)
-    Total RW  Size (RW Data + ZI Data)              1632 (   1.59kB)
-    Total ROM Size (Code + RO Data + RW Data)       6848 (   6.69kB)
+    Total RO  Size (Code + RO Data)                 6488 (   6.34kB)
+    Total RW  Size (RW Data + ZI Data)              1644 (   1.61kB)
+    Total ROM Size (Code + RO Data + RW Data)       7108 (   6.94kB)
 
 ==============================================================================
 
