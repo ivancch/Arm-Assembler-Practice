@@ -489,6 +489,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\13DiscreteContrMachine.s</FilePath>
             </File>
+            <File>
+              <FileName>14BitAddressableRegistersV1.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\14BitAddressableRegistersV1.s</FilePath>
+            </File>
+            <File>
+              <FileName>14BitAddressableRegistersV2.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\14BitAddressableRegistersV2.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -1,0 +1,321 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Возможности битового сопроцессора
+    2 00000000         ; Битовые ленты (Bit_Mapping) в памяти данных 
+    3 00000000         ; и в памяти периферийных устройств
+    4 00000000         
+    5 00000000         ; Объявить кодовую секцию MyCode
+    6 00000000                 AREA             MyCode14_1, CODE, ReadOnly
+    7 00000000         ; Объявить точку входа в программу приложения 
+    8 00000000                 ENTRY
+    9 00000000         ; Объвить точку входа глобальной переменной
+   10 00000000                 EXPORT           BitAddressableRegisters_V1
+   11 00000000         BitAddressableRegisters_V1
+   12 00000000         ; Объявление адресов регистров входных битовых переменных X
+                       
+   13 00000000         ; и выходных управляющих воздействий Y
+   14 00000000         ; в области по-битово, по-байтово адресуемой памяти ПУ
+   15 00000000 40000000 
+                       Port_X  EQU              0x40000000
+   16 00000000 40000004 
+                       Port_Y  EQU              0x40000004
+   17 00000000         ; Объявление псевдо-адресов доступа к битам вектора X
+   18 00000000 42000000 
+                       x0      EQU              0x42000000
+   19 00000000 42000004 
+                       x1      EQU              0x42000004
+   20 00000000 42000008 
+                       x2      EQU              0x42000008
+   21 00000000 4200000C 
+                       x3      EQU              0x4200000c
+   22 00000000 42000010 
+                       x4      EQU              0x42000010
+   23 00000000 42000014 
+                       x5      EQU              0x42000014
+   24 00000000 42000018 
+                       x6      EQU              0x42000018
+   25 00000000 4200001C 
+                       x7      EQU              0x4200001C
+   26 00000000         ; Объявление псевдо-адресов доступа к битам вектора Y
+   27 00000000 42000080 
+                       y0      EQU              0x42000080
+   28 00000000 42000084 
+                       y1      EQU              0x42000084
+   29 00000000 42000088 
+                       y2      EQU              0x42000088
+   30 00000000 4200008C 
+                       y3      EQU              0x4200008c
+   31 00000000 42000090 
+                       y4      EQU              0x42000090
+   32 00000000 42000094 
+                       y5      EQU              0x42000094
+   33 00000000 42000098 
+                       y6      EQU              0x42000098
+   34 00000000 4200009C 
+                       y7      EQU              0x4200009C
+   35 00000000         
+   36 00000000         ; Считать битовые компоненты вектора X в соответствующие 
+   37 00000000         ; регистры процесора x0-> r0;... x7->r7
+   38 00000000         Load_Bit
+   39 00000000         ; Инициализация базового регистра r10 адресом x0
+   40 00000000         ;    MOV r10, #x0
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   41 00000000         ; Получить очередной бит в одноименный регистр с пост-смеще�
+                       �ием
+   42 00000000         ; содержимого указателя на 4
+   43 00000000         ;    LDR r0,[r10],#4
+   44 00000000         ;    LDR r1,[r10],#4
+   45 00000000         ;    LDR r2,[r10],#4
+   46 00000000         ;    LDR r3,[r10],#4
+   47 00000000         ;    LDR r4,[r10],#4
+   48 00000000         ;    LDR r5,[r10],#4
+   49 00000000         ;    LDR r6,[r10],#4
+   50 00000000         ;    LDR r7,[r10]
+   51 00000000         
+   52 00000000         ; Более эффективна групповая загрузка регистров ЦПУ
+   53 00000000         ; Инициализация базового регистра r10 адресом x0
+   54 00000000 F04F 4A84       MOV              r10, #x0
+   55 00000004         ; Загрузка всех 8-и регистров ЦПУ битовыми переменными
+   56 00000004 E89A 00FF       LDM              r10,{r0-r7}
+   57 00000008         ; Все компоненты вектора X загужены в одноименные регистры Ц
+                       ПУ 
+   58 00000008         ; и выровнены по младшему биту с авто-очиской всех старших б�
+                       �т
+   59 00000008         ; Пример вычисления двух битовых управляющих воздействий
+   60 00000008         ; Расчет y0=(x0+x1)*/x7 (битовый аккумулятор r11)
+   61 00000008 EA40 0B01       ORR              r11,r0,r1
+   62 0000000C EA2B 0B07       BIC              r11,r7
+   63 00000010         ; Вывод управляющего воздействия y0
+   64 00000010 F8DF A01C       LDR              r10,=y0
+   65 00000014 F8CA B000       STR              r11, [r10]
+   66 00000018         ; Расчет y1=(x0*x1*/x2)+ x6 (битовый аккуумулятор r11)
+   67 00000018 EA00 0B01       AND              r11,r0,r1
+   68 0000001C EA2B 0B02       BIC              r11,r2
+   69 00000020 EA4B 0B06       ORR              r11,r6
+   70 00000024         ; Вывод управляющего воздействия y1
+   71 00000024 F8DF A00C       LDR              r10,=y1
+   72 00000028 F8CA B000       STR              r11, [r10]
+   73 0000002C         
+   74 0000002C E7E8            B                Load_Bit
+   75 0000002E         ; Останов
+   76 0000002E E7FE    Stop    B                Stop
+   77 00000030         ; Конец ассемблерного текста
+   78 00000030                 END
+              42000080 
+              42000084 
+Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\14bitaddressableregistersv1.d
+ -o.\objects\14bitaddressableregistersv1.o -IC:\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --pred
+efine="__UVISION_VERSION SETA 537" --predefine="ARMCM4_FP SETA 1" --list=.\listings\14bitaddressableregistersv1.lst src\AssemblerPra
+ctice\14BitAddressableRegistersV1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+BitAddressableRegisters_V1 00000000
+
+Symbol: BitAddressableRegisters_V1
+   Definitions
+      At line 11 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 10 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: BitAddressableRegisters_V1 used once
+Load_Bit 00000000
+
+Symbol: Load_Bit
+   Definitions
+      At line 38 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 74 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: Load_Bit used once
+MyCode14_1 00000000
+
+Symbol: MyCode14_1
+   Definitions
+      At line 6 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: MyCode14_1 unused
+Stop 0000002E
+
+Symbol: Stop
+   Definitions
+      At line 76 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 76 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: Stop used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+Port_X 40000000
+
+Symbol: Port_X
+   Definitions
+      At line 15 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: Port_X unused
+Port_Y 40000004
+
+Symbol: Port_Y
+   Definitions
+      At line 16 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: Port_Y unused
+x0 42000000
+
+Symbol: x0
+   Definitions
+      At line 18 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 54 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: x0 used once
+x1 42000004
+
+Symbol: x1
+   Definitions
+      At line 19 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x1 unused
+x2 42000008
+
+Symbol: x2
+   Definitions
+      At line 20 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x2 unused
+x3 4200000C
+
+Symbol: x3
+   Definitions
+      At line 21 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x3 unused
+x4 42000010
+
+Symbol: x4
+   Definitions
+      At line 22 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x4 unused
+x5 42000014
+
+Symbol: x5
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+   Definitions
+      At line 23 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x5 unused
+x6 42000018
+
+Symbol: x6
+   Definitions
+      At line 24 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x6 unused
+x7 4200001C
+
+Symbol: x7
+   Definitions
+      At line 25 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: x7 unused
+y0 42000080
+
+Symbol: y0
+   Definitions
+      At line 27 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 64 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: y0 used once
+y1 42000084
+
+Symbol: y1
+   Definitions
+      At line 28 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      At line 71 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+Comment: y1 used once
+y2 42000088
+
+Symbol: y2
+   Definitions
+      At line 29 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: y2 unused
+y3 4200008C
+
+Symbol: y3
+   Definitions
+      At line 30 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: y3 unused
+y4 42000090
+
+Symbol: y4
+   Definitions
+      At line 31 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Absolute symbols
+
+      None
+Comment: y4 unused
+y5 42000094
+
+Symbol: y5
+   Definitions
+      At line 32 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: y5 unused
+y6 42000098
+
+Symbol: y6
+   Definitions
+      At line 33 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: y6 unused
+y7 4200009C
+
+Symbol: y7
+   Definitions
+      At line 34 in file src\AssemblerPractice\14BitAddressableRegistersV1.s
+   Uses
+      None
+Comment: y7 unused
+18 symbols
+357 symbols in table

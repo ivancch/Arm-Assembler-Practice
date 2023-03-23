@@ -87,8 +87,24 @@ Main
 	; Программная реализация дискретного управляющего 
 	; автомата (главный привод продольно-строгального станка)
 		IMPORT DiscreteContrMachine
-		LDR r0, =DiscreteContrMachine
+;		LDR r0, =DiscreteContrMachine
+;		BX r0
+		
+	; Программирование битового сопроцессора.
+	; Битовые ленты (Bit_Mapping) в памяти данных 
+	; и в памяти периферийных устройств
+;		IMPORT BitAddressableRegisters_V1
+;		LDR r0, =BitAddressableRegisters_V1
 		BX r0
+		
+	; Программирование битового сопроцессора.
+	; Битовые ленты (Bit_Mapping) в памяти данных 
+	; и в памяти периферийных устройств
+	; методом тестирования битовых переменных.
+		IMPORT BitAddressableRegisters_V2
+		LDR r0, =BitAddressableRegisters_V2
+		BX r0
+		
 		
 Stop	
  		B Stop

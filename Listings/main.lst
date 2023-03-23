@@ -99,15 +99,31 @@ ARM Macro Assembler    Page 2
    87 00000000         ; Программная реализация дискретного управляющего 
    88 00000000         ; автомата (главный привод продольно-строгального станка)
    89 00000000                 IMPORT           DiscreteContrMachine
-   90 00000000 4801            LDR              r0, =DiscreteContrMachine
-   91 00000002 4700            BX               r0
-   92 00000004         
-   93 00000004         Stop
-   94 00000004 E7FE            B                Stop
-   95 00000006         
-   96 00000006 00 00           ALIGN
-   97 00000008         ; Конец ассемблерного текста
-   98 00000008                 END
+   90 00000000         ;  LDR r0, =DiscreteContrMachine
+   91 00000000         ;  BX r0
+   92 00000000         
+   93 00000000         ; Программирование битового сопроцессора.
+   94 00000000         ; Битовые ленты (Bit_Mapping) в памяти данных 
+   95 00000000         ; и в памяти периферийных устройств
+   96 00000000         ;  IMPORT BitAddressableRegisters_V1
+   97 00000000         ;  LDR r0, =BitAddressableRegisters_V1
+   98 00000000 4700            BX               r0
+   99 00000002         
+  100 00000002         ; Программирование битового сопроцессора.
+  101 00000002         ; Битовые ленты (Bit_Mapping) в памяти данных 
+  102 00000002         ; и в памяти периферийных устройств
+  103 00000002         ; методом тестирования битовых переменных.
+  104 00000002                 IMPORT           BitAddressableRegisters_V2
+  105 00000002 4801            LDR              r0, =BitAddressableRegisters_V2
+  106 00000004 4700            BX               r0
+  107 00000006         
+  108 00000006         
+  109 00000006         Stop
+  110 00000006 E7FE            B                Stop
+  111 00000008         
+  112 00000008                 ALIGN
+  113 00000008         ; Конец ассемблерного текста
+  114 00000008                 END
               00000000 
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
@@ -134,13 +150,13 @@ Symbol: MyCode
    Uses
       None
 Comment: MyCode unused
-Stop 00000004
+Stop 00000006
 
 Symbol: Stop
    Definitions
-      At line 93 in file src\AssemblerPractice\Main.s
+      At line 109 in file src\AssemblerPractice\Main.s
    Uses
-      At line 94 in file src\AssemblerPractice\Main.s
+      At line 110 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -165,6 +181,14 @@ Symbol: ArithmeticOpWithLDM_STM
    Uses
       None
 Comment: ArithmeticOpWithLDM_STM unused
+BitAddressableRegisters_V2 00000000
+
+Symbol: BitAddressableRegisters_V2
+   Definitions
+      At line 104 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 105 in file src\AssemblerPractice\Main.s
+Comment: BitAddressableRegisters_V2 used once
 BitwiseOpAndShifts 00000000
 
 Symbol: BitwiseOpAndShifts
@@ -187,8 +211,8 @@ Symbol: DiscreteContrMachine
    Definitions
       At line 89 in file src\AssemblerPractice\Main.s
    Uses
-      At line 90 in file src\AssemblerPractice\Main.s
-Comment: DiscreteContrMachine used once
+      None
+Comment: DiscreteContrMachine unused
 ForcedReservationLTORG 00000000
 
 Symbol: ForcedReservationLTORG
@@ -200,6 +224,12 @@ Comment: ForcedReservationLTORG unused
 IndirectAddressing 00000000
 
 Symbol: IndirectAddressing
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
    Definitions
       At line 36 in file src\AssemblerPractice\Main.s
    Uses
@@ -208,12 +238,6 @@ Comment: IndirectAddressing unused
 LogicContrTestBits 00000000
 
 Symbol: LogicContrTestBits
-
-
-
-ARM Macro Assembler    Page 2 Alphabetic symbol ordering
-External symbols
-
    Definitions
       At line 83 in file src\AssemblerPractice\Main.s
    Uses
@@ -259,5 +283,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-13 symbols
-351 symbols in table
+14 symbols
+352 symbols in table
