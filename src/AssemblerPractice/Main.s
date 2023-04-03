@@ -93,18 +93,24 @@ Main
 	; Программирование битового сопроцессора.
 	; Битовые ленты (Bit_Mapping) в памяти данных 
 	; и в памяти периферийных устройств
-;		IMPORT BitAddressableRegisters_V1
+		IMPORT BitAddressableRegisters_V1
 ;		LDR r0, =BitAddressableRegisters_V1
-		BX r0
+;		BX r0
 		
 	; Программирование битового сопроцессора.
 	; Битовые ленты (Bit_Mapping) в памяти данных 
 	; и в памяти периферийных устройств
 	; методом тестирования битовых переменных.
 		IMPORT BitAddressableRegisters_V2
-		LDR r0, =BitAddressableRegisters_V2
-		BX r0
+;		LDR r0, =BitAddressableRegisters_V2
+;		BX r0
 		
+	; Дискретный автомат управления продольно-строгальным 
+	; станком (второй вариант решения 
+	; с использованием "семафорной памяти")
+		IMPORT DiscreteContrMachine_V2
+		LDR r0, =DiscreteContrMachine_V2
+		BX r0
 		
 Stop	
  		B Stop
