@@ -109,8 +109,15 @@ Main
 	; станком (второй вариант решения 
 	; с использованием "семафорной памяти")
 		IMPORT DiscreteContrMachine_V2
-		LDR r0, =DiscreteContrMachine_V2
-		BX r0
+;		LDR r0, =DiscreteContrMachine_V2
+;		BX r0
+		
+	; Работа со стеком.
+	; Несколько вариаций.
+		IMPORT StackTesting
+		LDR r0, =StackTesting
+		BX r0;
+		
 		
 Stop	
  		B Stop

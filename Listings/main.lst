@@ -121,21 +121,28 @@ ARM Macro Assembler    Page 2
   109 00000000         ; станком (второй вариант решения 
   110 00000000         ; с использованием "семафорной памяти")
   111 00000000                 IMPORT           DiscreteContrMachine_V2
-  112 00000000 4801            LDR              r0, =DiscreteContrMachine_V2
-  113 00000002 4700            BX               r0
-  114 00000004         
-  115 00000004         Stop
-  116 00000004 E7FE            B                Stop
-  117 00000006         
-  118 00000006 00 00           ALIGN
+  112 00000000         ;  LDR r0, =DiscreteContrMachine_V2
+  113 00000000         ;  BX r0
+  114 00000000         
+  115 00000000         ; Работа со стеком.
+  116 00000000         ; Несколько вариаций.
+  117 00000000                 IMPORT           StackTesting
+  118 00000000 4801            LDR              r0, =StackTesting
 
 
 
 ARM Macro Assembler    Page 3 
 
 
-  119 00000008         ; Конец ассемблерного текста
-  120 00000008                 END
+  119 00000002 4700            BX               r0          ;
+  120 00000004         
+  121 00000004         
+  122 00000004         Stop
+  123 00000004 E7FE            B                Stop
+  124 00000006         
+  125 00000006 00 00           ALIGN
+  126 00000008         ; Конец ассемблерного текста
+  127 00000008                 END
               00000000 
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
@@ -166,9 +173,9 @@ Stop 00000004
 
 Symbol: Stop
    Definitions
-      At line 115 in file src\AssemblerPractice\Main.s
+      At line 122 in file src\AssemblerPractice\Main.s
    Uses
-      At line 116 in file src\AssemblerPractice\Main.s
+      At line 123 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -245,8 +252,8 @@ External symbols
    Definitions
       At line 111 in file src\AssemblerPractice\Main.s
    Uses
-      At line 112 in file src\AssemblerPractice\Main.s
-Comment: DiscreteContrMachine_V2 used once
+      None
+Comment: DiscreteContrMachine_V2 unused
 ForcedReservationLTORG 00000000
 
 Symbol: ForcedReservationLTORG
@@ -309,6 +316,14 @@ External symbols
 
       None
 Comment: SimpleOperations unused
+StackTesting 00000000
+
+Symbol: StackTesting
+   Definitions
+      At line 117 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 118 in file src\AssemblerPractice\Main.s
+Comment: StackTesting used once
 _32bitConst 00000000
 
 Symbol: _32bitConst
@@ -317,5 +332,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-16 symbols
-354 symbols in table
+17 symbols
+355 symbols in table

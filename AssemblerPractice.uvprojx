@@ -504,6 +504,11 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\13DiscreteContrMachineV2.s</FilePath>
             </File>
+            <File>
+              <FileName>15StackTesting.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\15StackTesting.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -203,7 +203,7 @@
         <Mm>
           <WinNumber>2</WinNumber>
           <SubType>1</SubType>
-          <ItemText>0x20000214</ItemText>
+          <ItemText>0x20000600</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
@@ -547,6 +547,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\AssemblerPractice\13DiscreteContrMachineV2.s</PathWithFileName>
       <FilenameWithoutPath>13DiscreteContrMachineV2.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>24</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\AssemblerPractice\15StackTesting.s</PathWithFileName>
+      <FilenameWithoutPath>15StackTesting.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
