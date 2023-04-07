@@ -215,6 +215,14 @@
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow3>
+      <MemoryWindow4>
+        <Mm>
+          <WinNumber>4</WinNumber>
+          <SubType>257</SubType>
+          <ItemText>0x2000023c</ItemText>
+          <AccSizeX>0</AccSizeX>
+        </Mm>
+      </MemoryWindow4>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -559,6 +567,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\src\AssemblerPractice\15StackTesting.s</PathWithFileName>
       <FilenameWithoutPath>15StackTesting.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>25</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\AssemblerPractice\16CopyArraySort.s</PathWithFileName>
+      <FilenameWithoutPath>16CopyArraySort.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -509,6 +509,11 @@
               <FileType>2</FileType>
               <FilePath>.\src\AssemblerPractice\15StackTesting.s</FilePath>
             </File>
+            <File>
+              <FileName>16CopyArraySort.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\AssemblerPractice\16CopyArraySort.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

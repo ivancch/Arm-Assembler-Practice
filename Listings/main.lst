@@ -127,22 +127,39 @@ ARM Macro Assembler    Page 2
   115 00000000         ; Работа со стеком.
   116 00000000         ; Несколько вариаций.
   117 00000000                 IMPORT           StackTesting
-  118 00000000 4801            LDR              r0, =StackTesting
+  118 00000000         ;  LDR r0, =StackTesting
 
 
 
 ARM Macro Assembler    Page 3 
 
 
-  119 00000002 4700            BX               r0          ;
-  120 00000004         
-  121 00000004         
-  122 00000004         Stop
-  123 00000004 E7FE            B                Stop
-  124 00000006         
-  125 00000006 00 00           ALIGN
-  126 00000008         ; Конец ассемблерного текста
-  127 00000008                 END
+  119 00000000         ;  BX r0;
+  120 00000000         
+  121 00000000         ; Пример вложенных подпрограмм копирования и 
+  122 00000000         ; сортировки данных в массиве
+  123 00000000         ; Input example: E int 0x2000023c=3,6,12,5,11,48,44,29,72,14 
+  124 00000000                 IMPORT           CopyArraySort
+  125 00000000 4801            LDR              r0, =CopyArraySort
+  126 00000002 4700            BX               r0          ;
+  127 00000004         
+  128 00000004         
+  129 00000004         
+  130 00000004         
+  131 00000004         ;  IMPORT
+  132 00000004         ;  LDR r0,
+  133 00000004         ;  BX r0;
+  134 00000004         
+  135 00000004         
+  136 00000004         
+  137 00000004         
+  138 00000004         
+  139 00000004         Stop
+  140 00000004 E7FE            B                Stop
+  141 00000006         
+  142 00000006 00 00           ALIGN
+  143 00000008         ; Конец ассемблерного текста
+  144 00000008                 END
               00000000 
 Command Line: --debug --xref --width=132 --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depend=.\objects\main.d -o.\objects\main.o -IC
 :\Users\user1\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM4\Include --predefine="__UVISION_VERSION SETA 537" --predefine
@@ -173,9 +190,9 @@ Stop 00000004
 
 Symbol: Stop
    Definitions
-      At line 122 in file src\AssemblerPractice\Main.s
+      At line 139 in file src\AssemblerPractice\Main.s
    Uses
-      At line 123 in file src\AssemblerPractice\Main.s
+      At line 140 in file src\AssemblerPractice\Main.s
 Comment: Stop used once
 3 symbols
 
@@ -224,6 +241,14 @@ Symbol: BitwiseOpAndShifts
    Uses
       None
 Comment: BitwiseOpAndShifts unused
+CopyArraySort 00000000
+
+Symbol: CopyArraySort
+   Definitions
+      At line 124 in file src\AssemblerPractice\Main.s
+   Uses
+      At line 125 in file src\AssemblerPractice\Main.s
+Comment: CopyArraySort used once
 CopyRomRamWithLoop 00000000
 
 Symbol: CopyRomRamWithLoop
@@ -235,6 +260,12 @@ Comment: CopyRomRamWithLoop unused
 DiscreteContrMachine 00000000
 
 Symbol: DiscreteContrMachine
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+External symbols
+
    Definitions
       At line 89 in file src\AssemblerPractice\Main.s
    Uses
@@ -243,12 +274,6 @@ Comment: DiscreteContrMachine unused
 DiscreteContrMachine_V2 00000000
 
 Symbol: DiscreteContrMachine_V2
-
-
-
-ARM Macro Assembler    Page 2 Alphabetic symbol ordering
-External symbols
-
    Definitions
       At line 111 in file src\AssemblerPractice\Main.s
    Uses
@@ -300,6 +325,12 @@ Symbol: ReservationDirective
    Definitions
       At line 31 in file src\AssemblerPractice\Main.s
    Uses
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+External symbols
+
       None
 Comment: ReservationDirective unused
 SimpleOperations 00000000
@@ -308,12 +339,6 @@ Symbol: SimpleOperations
    Definitions
       At line 12 in file src\AssemblerPractice\Main.s
    Uses
-
-
-
-ARM Macro Assembler    Page 3 Alphabetic symbol ordering
-External symbols
-
       None
 Comment: SimpleOperations unused
 StackTesting 00000000
@@ -322,8 +347,8 @@ Symbol: StackTesting
    Definitions
       At line 117 in file src\AssemblerPractice\Main.s
    Uses
-      At line 118 in file src\AssemblerPractice\Main.s
-Comment: StackTesting used once
+      None
+Comment: StackTesting unused
 _32bitConst 00000000
 
 Symbol: _32bitConst
@@ -332,5 +357,5 @@ Symbol: _32bitConst
    Uses
       None
 Comment: _32bitConst unused
-17 symbols
-355 symbols in table
+18 symbols
+356 symbols in table

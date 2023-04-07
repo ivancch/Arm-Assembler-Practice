@@ -115,10 +115,27 @@ Main
 	; Работа со стеком.
 	; Несколько вариаций.
 		IMPORT StackTesting
-		LDR r0, =StackTesting
+;		LDR r0, =StackTesting
+;		BX r0;
+	
+	; Пример вложенных подпрограмм копирования и 
+	; сортировки данных в массиве
+	; Input example: E int 0x2000023c=3,6,12,5,11,48,44,29,72,14 
+		IMPORT CopyArraySort
+		LDR r0, =CopyArraySort
 		BX r0;
 		
+
+
+
+;		IMPORT
+;		LDR r0,
+;		BX r0;
 		
+		
+		
+		
+
 Stop	
  		B Stop
 
